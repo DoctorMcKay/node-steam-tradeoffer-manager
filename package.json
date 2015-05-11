@@ -22,7 +22,6 @@
 	},
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
 	"dependencies": {
-		"request": "^2.55.0",
 		"steamcommunity": "^1.0.3"
 	}
 }
