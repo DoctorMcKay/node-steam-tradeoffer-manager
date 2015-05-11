@@ -88,7 +88,7 @@ function TradeOffer(manager, partner) {
 	
 	this.id = null;
 	this.message = null;
-	this.state = TradeOfferManager.ETradeOfferState.Invalid;
+	this.state = ETradeOfferState.Invalid;
 	this.itemsToGive = [];
 	this.itemsToReceive = [];
 	this.isOurOffer = null;
@@ -99,17 +99,100 @@ function TradeOffer(manager, partner) {
 	this.fromRealTimeTrade = null;
 }
 
-TradeOffer.prototype.send = function(message, callback) {
+TradeOffer.prototype.send = function(message, token, callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
 	}
 	
-	if(typeof message !== 'string') {
-		callback = message;
-		message = '';
+	message = message || '';
+	
+	if(typeof token !== 'string') {
+		callback = token;
+		token = null;
 	}
 	
-	// TODO
+	var offerdata = {
+		"newversion": true,
+		"version": 4,
+		"me": {
+			"assets": this.itemsToGive.map(function(item) {
+				return {
+					"appid": item.appid,
+					"contextid": item.contextid,
+					"amount": item.amount || 1,
+					"assetid": item.assetid
+				};
+			}),
+			"currency": [], // TODO
+			"ready": false
+		},
+		"them": {
+			"assets": this.itemsToReceive.map(function(item) {
+				return {
+					"appid": item.appid,
+					"contextid": item.contextid,
+					"amount": item.amount || 1,
+					"assetid": item.assetid
+				};
+			}),
+			"currency": [],
+			"ready": false
+		}
+	};
+	
+	var params = {};
+	if(token) {
+		params.trade_offer_access_token = token;
+	}
+	
+	this._request.post('https://steamcommunity.com/tradeoffer/new/send', {
+		"headers": {
+			"referer": "https://steamcommunity.com/tradeoffer/new/?partner=" + this.partner.accountid + (token ? "&token=" + token)
+		},
+		"json": true,
+		"form": {
+			"sessionid": this._community.getSessionID(),
+			"serverid": 1,
+			"partner": this.partner.toString(),
+			"tradeoffermessage": message,
+			"json_tradeoffer": JSON.stringify(offerdata),
+			"captcha": '',
+			"trade_offer_create_params": JSON.stringify(params)
+		}
+	}, function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback);
+		}
+		
+		if(body && body.strError) {
+			return makeAnError(new Error(body.strError));
+		}
+		
+		if(body && body.tradeofferid) {
+			this.id = body.tradeofferid;
+			this.message = message;
+			this.state = ETradeOfferState.Active;
+			this.created = new Date();
+			this.updated = new Date();
+			this.expires = new Date(Date.now() + 1209600000);
+		}
+		
+		if(body && body.needs_email_confirmation) {
+			this.state = ETradeOfferState.EmailPending;
+		}
+		
+		if(!callback) {
+			return;
+		}
+		
+		if(body && body.needs_email_confirmation) {
+			callback(null, 'pending');
+		} else if(body && body.tradeofferid) {
+			callback(null, 'sent');
+		} else {
+			callback(new Error("Unknown response"));
+		}
+	}.bind(this));
 };
 
 TradeOffer.prototype.cancel = function(callback) {
