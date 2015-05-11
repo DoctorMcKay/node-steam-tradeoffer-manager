@@ -1,5 +1,7 @@
 var TradeOfferManager = require('./index.js');
 
+var EResult = require('./resources/EResult.js');
+
 TradeOfferManager.prototype._apiCall = function(httpMethod, method, version, input, callback) {
 	var options = {
 		"uri": "https://api.steampowered.com/IEconService/" + method + "/v" + version + "/",
@@ -15,6 +17,11 @@ TradeOfferManager.prototype._apiCall = function(httpMethod, method, version, inp
 	this._request(options, function(err, response, body) {
 		if(err || response.statusCode != 200) {
 			return callback(err || new Error("HTTP error " + response.statusCode));
+		}
+		
+		var eresult = response.headers['x-eresult'];
+		if(typeof eresult !== 'undefined' && eresult != 1) {
+			return callback(new Error(EResult[eresult]));
 		}
 		
 		if(!body || typeof body != 'object') {
