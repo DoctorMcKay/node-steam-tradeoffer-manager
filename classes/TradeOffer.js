@@ -99,9 +99,14 @@ function TradeOffer(manager, partner) {
 	this.fromRealTimeTrade = null;
 }
 
-TradeOffer.prototype.send = function(callback) {
+TradeOffer.prototype.send = function(message, callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
+	}
+	
+	if(typeof message !== 'string') {
+		callback = message;
+		message = '';
 	}
 	
 	// TODO
@@ -145,7 +150,41 @@ TradeOffer.prototype.accept = function(callback) {
 		return makeAnError(new Error("Cannot accept our own offer #" + this.id), callback);
 	}
 	
-	// TODO
+	this._request.post('https://steamcommunity.com/tradeoffer/' + this.id + '/accept', {
+		"headers": {
+			"referer": 'https://steamcommunity.com/tradeoffer/' + this.id + '/'
+		},
+		"json": true,
+		"form": {
+			"sessionid": this._community.getSessionID(),
+			"serverid": 1,
+			"tradeofferid": this.id,
+			"partner": this.partner.toString(),
+			"captcha": ""
+		}
+	}, function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback);
+		}
+		
+		if(body && body.strError) {
+			return makeAnError(new Error(body.strError), callback);
+		}
+		
+		if(!callback) {
+			return;
+		}
+		
+		if(body && body.needs_email_confirmation) {
+			callback(null, 'pending');
+		} else if(body && body.tradeid) {
+			this.state = ETradeOfferState.Accepted;
+			this.tradeid = body.tradeid;
+			callback(null, 'accepted');
+		} else {
+			callback(new Error("Unknown response"));
+		}
+	}.bind(this));
 };
 
 TradeOffer.prototype.getReceivedItems = function(callback) {
