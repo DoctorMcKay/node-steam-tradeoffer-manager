@@ -2,6 +2,7 @@ var SteamCommunity = require('steamcommunity');
 
 module.exports = TradeOfferManager;
 
+TradeOfferManager.SteamID = require('steamid');
 TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
 
 function TradeOfferManager(steam, domain) {
