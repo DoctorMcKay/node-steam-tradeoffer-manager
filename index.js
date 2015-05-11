@@ -40,7 +40,11 @@ TradeOfferManager.prototype._checkApiKey = function(callback) {
 };
 
 function makeAnError(error, callback) {
-	if(callback) {
+	if(typeof callback === 'boolean' && !callback) {
+		return;
+	}
+	
+	if(typeof callback === 'function') {
 		callback(error);
 	} else {
 		throw error;
