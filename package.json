@@ -20,5 +20,8 @@
 	"bugs": {
 		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues"
 	},
-	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager"
+	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
+	"dependencies": {
+		"request": "^2.55.0"
+	}
 }
