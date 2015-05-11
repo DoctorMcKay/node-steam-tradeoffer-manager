@@ -212,10 +212,12 @@ TradeOffer.prototype.cancel = function(callback) {
 			makeAnError(err, callback);
 		}
 		
+		this.updated = new Date();
+		
 		if(callback) {
 			callback();
 		}
-	});
+	}.bind(this));
 };
 
 TradeOffer.prototype.decline = function(callback) {
@@ -255,6 +257,10 @@ TradeOffer.prototype.accept = function(callback) {
 		
 		if(body && body.strError) {
 			return makeAnError(new Error(body.strError), callback);
+		}
+		
+		if(body && body.tradeid) {
+			this.updated = new Date();
 		}
 		
 		if(!callback) {
