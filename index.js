@@ -6,15 +6,6 @@ TradeOfferManager.SteamID = require('steamid');
 TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
 TradeOfferManager.EOfferFilter = require('./resources/EOfferFilter.js');
 
-/**
- * A TradeOfferManager represents the concept of trade offers in the context of a Steam account. It is a master object which manages all trade offers for the account.
- * It polls trade offer status from Steam every 30 seconds and acts on any offers which might have changed.
- * If a SteamClient is available, it polls immediately on notification from Steam in addition to every 30 seconds.
- * @constructor
- * @param {SteamClient} steam - A node-steam SteamClient object, or `null` if unavailable.
- * @param {string} domain - Your domain name. You can use `localhost` if none. Used to register your API key if you don't yet have one.
- * @param {string} language - A language code to return item data in. `null` if you don't want/need item data.
- */
 function TradeOfferManager(steam, domain, language) {
 	this._steam = steam;
 	this._community = new SteamCommunity();

@@ -4,10 +4,6 @@ var SteamID = require('steamid');
 var ETradeOfferState = TradeOfferManager.ETradeOfferState;
 var EOfferFilter = TradeOfferManager.EOfferFilter;
 
-/**
- * Create a new, empty TradeOffer object
- * @param {SteamID|string} partner - Either a SteamID object, or a string which can be parsed into a SteamID
- */
 TradeOfferManager.prototype.createOffer = function(partner) {
 	return new TradeOffer(this, partner);
 };
@@ -82,13 +78,6 @@ function createOfferFromData(manager, data) {
 	return offer;
 }
 
-/**
- * Represents a trade offer in any state, including one which has yet to be sent.
- * This cannot be instantiated directly, and must be received from a call to {@link TradeOfferManager#createOffer}, {@link TradeOfferManager#getOffer}, or {@link TradeOfferManager#getOffers}.
- * @constructor
- * @param {TradeOfferManager} manager - The TradeOfferManager
- * @param {SteamID|string} partner - The trade partner
- */
 function TradeOffer(manager, partner) {
 	if(partner instanceof SteamID) {
 		this.partner = partner;
@@ -112,10 +101,6 @@ function TradeOffer(manager, partner) {
 	this.fromRealTimeTrade = null;
 }
 
-/**
- * Sends a trade offer
- * @param {function} callback - Called on completion
- */
 TradeOffer.prototype.send = function(callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
