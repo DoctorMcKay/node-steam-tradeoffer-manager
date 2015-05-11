@@ -22,15 +22,15 @@ TradeOfferManager.prototype.getOffer = function(id, callback) {
 	}.bind(this));
 };
 
-TradeOfferManager.prototype.getOffers = function(sent, received, filter, historicalCutoff, callback) {
+TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callback) {
 	if(typeof historicalCutoff === 'function') {
 		callback = historicalCutoff;
 		historicalCutoff = new Date(Date.now() + (31536000000));
 	}
 	
 	var options = {
-		"get_sent_offers": sent ? 1 : 0,
-		"get_received_offers": received ? 1 : 0,
+		"get_sent_offers": 1,
+		"get_received_offers": 1,
 		"get_descriptions": this._language ? 1 : 0,
 		"language": this._language,
 		"active_only": filter == EOfferFilter.ActiveOnly ? 1 : 0,
