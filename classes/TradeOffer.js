@@ -52,7 +52,7 @@ TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callb
 			return createOfferFromData(manager, data);
 		});
 		
-		var received = (body.response.trade_offers_received | []).map(function(data) {
+		var received = (body.response.trade_offers_received || []).map(function(data) {
 			return createOfferFromData(manager, data);
 		});
 		
@@ -63,7 +63,6 @@ TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callb
 function createOfferFromData(manager, data) {
 	var offer = new TradeOffer(manager, new SteamID('[U:1:' + data.accountid_other + ']'));
 	offer.id = data.tradeofferid;
-	//offer.counteredID
 	offer.message = data.message;
 	offer.state = data.trade_offer_state;
 	offer.itemsToGive = data.items_to_give || [];
@@ -88,7 +87,6 @@ function TradeOffer(manager, partner) {
 	this._manager = manager;
 	
 	this.id = null;
-	this.counteredID = null;
 	this.message = null;
 	this.state = TradeOfferManager.ETradeOfferState.Invalid;
 	this.itemsToGive = [];
