@@ -69,7 +69,7 @@ TradeOffer.prototype.send = function(callback) {
 
 TradeOffer.prototype.cancel = function(callback) {
 	if(!this.id) {
-		return makeAnError(new Error("This offer has not been sent, so it cannot be cancelled"), callback);
+		return makeAnError(new Error("Cannot cancel or decline an unsent offer"), callback);
 	}
 	
 	if(this.state != ETradeOfferState.Active) {
@@ -93,12 +93,32 @@ TradeOffer.prototype.decline = function(callback) {
 };
 
 TradeOffer.prototype.accept = function(callback) {
+	if(!this.id) {
+		return makeAnError(new Error("Cannot accept an unsent offer"), callback);
+	}
+	
 	if(this.state != ETradeOfferState.Active) {
 		return makeAnError(new Error("Offer #" + this.id + " is not active, so it may not be accepted"), callback);
 	}
 	
 	if(this.isOurOffer) {
 		return makeAnError(new Error("Cannot accept our own offer #" + this.id), callback);
+	}
+	
+	// TODO
+};
+
+TradeOffer.prototype.getReceivedItems = function(callback) {
+	if(!this.id) {
+		return makeAnError(new Error("Cannot request received items on an unsent offer"), callback);
+	}
+	
+	if(this.state != ETradeOfferState.Accepted) {
+		return makeAnError(new Error("Offer #" + this.id + " is not accepted, cannot request received items"), callback);
+	}
+	
+	if(!this.tradeID) {
+		return makeAnError(new Error("Offer #" + this.id + " is accepted, but does not have a trade ID"), callback);
 	}
 	
 	// TODO
