@@ -2,7 +2,12 @@ var TradeOfferManager = require('../index.js');
 var SteamID = require('steamid');
 
 var ETradeOfferState = TradeOfferManager.ETradeOfferState;
+var EOfferFilter = TradeOfferManager.EOfferFilter;
 
+/**
+ * Create a new, empty TradeOffer object
+ * @param {SteamID|string} partner - Either a SteamID object, or a string which can be parsed into a SteamID
+ */
 TradeOfferManager.prototype.createOffer = function(partner) {
 	return new TradeOffer(this, partner);
 };
@@ -17,25 +22,73 @@ TradeOfferManager.prototype.getOffer = function(id, callback) {
 			return callback(new Error("Malformed API response"));
 		}
 		
-		var data = body.response.offer;
-		var offer = new TradeOffer(this, new SteamID('[U:1:' + data.accountid_other + ']'));
-		offer.id = data.tradeofferid;
-		//offer.counteredID
-		offer.message = data.message;
-		offer.state = data.trade_offer_state;
-		offer.itemsToGive = data.items_to_give || [];
-		offer.itemsToReceive = data.items_to_receive || [];
-		offer.isOurOffer = data.is_our_offer;
-		offer.created = new Date(data.time_created * 1000),
-		offer.updated = new Date(data.time_updated * 1000),
-		offer.expires = new Date(data.expiration_time * 1000),
-		offer.tradeID = data.tradeid || null;
-		offer.fromRealTimeTrade = data.from_real_time_trade;
-		
-		callback(null, offer);
+		callback(null, createOfferFromData(this, body.response.offer));
 	}.bind(this));
 };
 
+TradeOfferManager.prototype.getOffers = function(sent, received, filter, historicalCutoff, callback) {
+	if(typeof historicalCutoff === 'function') {
+		callback = historicalCutoff;
+		historicalCutoff = new Date(Date.now() + (31536000000));
+	}
+	
+	var options = {
+		"get_sent_offers": sent ? 1 : 0,
+		"get_received_offers": received ? 1 : 0,
+		"get_descriptions": this._language ? 1 : 0,
+		"language": this._language,
+		"active_only": filter == EOfferFilter.ActiveOnly ? 1 : 0,
+		"historical_only": filter == EOfferFilter.HistoricalOnly ? 1 : 0,
+		"time_historical_cutoff": Math.floor(historicalCutoff.getTime())
+	};
+	
+	var manager = this;
+	this._apiCall('GET', 'GetTradeOffers', 1, options, function(err, body) {
+		if(err) {
+			return callback(err);
+		}
+		
+		if(!body.response) {
+			return callback(new Error("Malformed API response"));
+		}
+		
+		var sent = (body.response.trade_offers_sent || []).map(function(data) {
+			return createOfferFromData(manager, data);
+		});
+		
+		var received = (body.response.trade_offers_received | []).map(function(data) {
+			return createOfferFromData(manager, data);
+		});
+		
+		callback(null, sent, received);
+	});
+};
+
+function createOfferFromData(manager, data) {
+	var offer = new TradeOffer(manager, new SteamID('[U:1:' + data.accountid_other + ']'));
+	offer.id = data.tradeofferid;
+	//offer.counteredID
+	offer.message = data.message;
+	offer.state = data.trade_offer_state;
+	offer.itemsToGive = data.items_to_give || [];
+	offer.itemsToReceive = data.items_to_receive || [];
+	offer.isOurOffer = data.is_our_offer;
+	offer.created = new Date(data.time_created * 1000),
+	offer.updated = new Date(data.time_updated * 1000),
+	offer.expires = new Date(data.expiration_time * 1000),
+	offer.tradeID = data.tradeid || null;
+	offer.fromRealTimeTrade = data.from_real_time_trade;
+	
+	return offer;
+}
+
+/**
+ * Represents a trade offer in any state, including one which has yet to be sent.
+ * This cannot be instantiated directly, and must be received from a call to {@link TradeOfferManager#createOffer}, {@link TradeOfferManager#getOffer}, or {@link TradeOfferManager#getOffers}.
+ * @constructor
+ * @param {TradeOfferManager} manager - The TradeOfferManager
+ * @param {SteamID|string} partner - The trade partner
+ */
 function TradeOffer(manager, partner) {
 	if(partner instanceof SteamID) {
 		this.partner = partner;
@@ -59,6 +112,10 @@ function TradeOffer(manager, partner) {
 	this.fromRealTimeTrade = null;
 }
 
+/**
+ * Sends a trade offer
+ * @param {function} callback - Called on completion
+ */
 TradeOffer.prototype.send = function(callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
