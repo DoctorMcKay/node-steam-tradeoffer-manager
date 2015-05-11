@@ -7,6 +7,35 @@ TradeOfferManager.prototype.createOffer = function(partner) {
 	return new TradeOffer(this, partner);
 };
 
+TradeOfferManager.prototype.getOffer = function(id, callback) {
+	this._apiCall('GET', 'GetTradeOffer', 1, {"tradeofferid": id}, function(err, body) {
+		if(err) {
+			return callback(err);
+		}
+		
+		if(!body.response || !body.response.offer) {
+			return callback(new Error("Malformed API response"));
+		}
+		
+		var data = body.response.offer;
+		var offer = new TradeOffer(this, new SteamID('[U:1:' + data.accountid_other + ']'));
+		offer.id = data.tradeofferid;
+		//offer.counteredID
+		offer.message = data.message;
+		offer.state = data.trade_offer_state;
+		offer.itemsToGive = data.items_to_give || [];
+		offer.itemsToReceive = data.items_to_receive || [];
+		offer.isOurOffer = data.is_our_offer;
+		offer.created = new Date(data.time_created * 1000),
+		offer.updated = new Date(data.time_updated * 1000),
+		offer.expires = new Date(data.expiration_time * 1000),
+		offer.tradeID = data.tradeid || null;
+		offer.fromRealTimeTrade = data.from_real_time_trade;
+		
+		callback(null, offer);
+	}.bind(this));
+};
+
 function TradeOffer(manager, partner) {
 	if(partner instanceof SteamID) {
 		this.partner = partner;
