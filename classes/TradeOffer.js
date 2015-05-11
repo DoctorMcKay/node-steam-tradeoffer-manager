@@ -102,6 +102,52 @@ function TradeOffer(manager, partner) {
 	this.fromRealTimeTrade = null;
 }
 
+TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback, data, start) {
+	this._request('https://steamcommunity.com/tradeoffer/' + (this.id ? this.id : 'new') + '/partnerinventory/', {
+		"qs": {
+			"sessionid": this._community.getSessionID(),
+			"partner": this.partner.toString(),
+			"appid": appid,
+			"contextid": contextid,
+			"start": start
+		},
+		"headers": {
+			"referer": {
+				"https://steamcommunity.com/tradeoffer/" + (this.id ? this.id : 'new') + "/?partner=" + this.partner.accountid
+			}
+		},
+		"json": true
+	}, function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return callback(err || new Error("HTTP error " + response.statusCode));
+		}
+		
+		if(!body || !body.rgInventory || !body.rgDescriptions || !body.rgCurrency) {
+			return callback(new Error("Malformed response"));
+		}
+		
+		data = (data || []).concat(mergeWithDescriptions(body.rgInventory, body.rgDescriptions, contextid)).concat(mergeWithDescriptions(body.rgCurrency, body.rgDescriptions, contextid));
+		if(body.more) {
+			this.loadPartnerInventory(appid, contextid, callback, data, body.more_start);
+		} else {
+			callback(null, data);
+		}
+	}.bind(this));
+};
+
+function mergeWithDescriptions(items, descriptions, contextid) {
+	return Object.keys(items).map(function(id) {
+		var item = items[id];
+		var description = descriptions[item.classid + '_' + (item.instanceid || '0')];
+		for (var key in description) {
+			item[key] = description[key];
+		}
+		// add contextid because Steam is retarded
+		item.contextid = contextid;
+		return item;
+	});
+}
+
 TradeOffer.prototype.send = function(message, token, callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
