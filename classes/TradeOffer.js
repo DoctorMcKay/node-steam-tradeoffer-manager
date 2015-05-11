@@ -5,7 +5,10 @@ var ETradeOfferState = TradeOfferManager.ETradeOfferState;
 var EOfferFilter = TradeOfferManager.EOfferFilter;
 
 TradeOfferManager.prototype.createOffer = function(partner) {
-	return new TradeOffer(this, partner);
+	var offer = new TradeOffer(this, partner);
+	offer.isOurOffer = true;
+	offer.fromRealTimeTrade = false;
+	return offer;
 };
 
 TradeOfferManager.prototype.getOffer = function(id, callback) {
