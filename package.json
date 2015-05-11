@@ -1,0 +1,24 @@
+{
+	"name": "steam-tradeoffer-manager",
+	"version": "0.0.1",
+	"description": "A simple trade offers API for Steam",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager.git"
+	},
+	"keywords": [
+		"steam",
+		"trade",
+		"offers",
+		"tradeoffers",
+		"trading",
+		"trade"
+	],
+	"author": "Alexander Corn <mckay@doctormckay.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues"
+	},
+	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager"
+}
