@@ -20,6 +20,10 @@ TradeOfferManager.prototype.setCookies = function(cookies, callback) {
 	this._checkApiKey(callback);
 };
 
+TradeOfferManager.prototype.parentalUnlock = function(pin, callback) {
+	this._community.parentalUnlock(pin, callback);
+};
+
 TradeOfferManager.prototype._checkApiKey = function(callback) {
 	if(this.apiKey) {
 		if(callback) {
