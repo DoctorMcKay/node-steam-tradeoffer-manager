@@ -2,6 +2,8 @@ var SteamCommunity = require('steamcommunity');
 
 module.exports = TradeOfferManager;
 
+TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
+
 function TradeOfferManager(steam, domain) {
 	this._steam = steam;
 	this._community = new SteamCommunity();
@@ -44,4 +46,4 @@ function makeAnError(error, callback) {
 	}
 }
 
-TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
+require('./webapi.js');
