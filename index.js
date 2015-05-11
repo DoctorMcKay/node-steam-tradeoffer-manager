@@ -58,3 +58,4 @@ function makeAnError(error, callback) {
 }
 
 require('./webapi.js');
+require('./classes/TradeOffer.js');
