@@ -6,12 +6,14 @@ TradeOfferManager.SteamID = require('steamid');
 TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
 TradeOfferManager.EOfferFilter = require('./resources/EOfferFilter.js');
 
-function TradeOfferManager(steam, domain, language) {
+function TradeOfferManager(steam, domain, language, pollInterval) {
 	this._steam = steam;
 	this._community = new SteamCommunity();
 	this._domain = domain || 'localhost';
 	this._language = language;
 	this._languageName = null;
+	this._pollInterval = pollInterval || 30000;
+	this._pollTimer = null;
 	
 	if(language) {
 		var lang = require('languages').getLanguageInfo(language);
@@ -31,7 +33,15 @@ function TradeOfferManager(steam, domain, language) {
 
 TradeOfferManager.prototype.setCookies = function(cookies, callback) {
 	this._community.setCookies(cookies);
-	this._checkApiKey(callback);
+	this._checkApiKey(function(err) {
+		if(!err) {
+			if(!this._pollTimer && this._pollInterval >= 1000) {
+				this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+			}
+		}
+		
+		callback(err);
+	}.bind(this));
 };
 
 TradeOfferManager.prototype.parentalUnlock = function(pin, callback) {
@@ -87,6 +97,10 @@ TradeOfferManager.prototype.loadInventory = function(appid, contextid, tradableO
 			callback(null, data);
 		}
 	}.bind(this));
+};
+
+TradeOfferManager.prototype._doPoll = function() {
+	// TODO
 };
 
 function makeAnError(error, callback) {
