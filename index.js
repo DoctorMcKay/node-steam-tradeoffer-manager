@@ -61,6 +61,34 @@ TradeOfferManager.prototype._checkApiKey = function(callback) {
 	}.bind(this));
 };
 
+TradeOfferManager.prototype.loadInventory = function(appid, contextid, tradableOnly, callback, data, start) {
+	this._request('https://steamcommunity.com/my/inventory/json/' + appid + '/' + contextid + '/', {
+		"qs": {
+			"start": start,
+			"l": this._languageName,
+			"trading": tradableOnly ? 1 : undefined
+		},
+		"json": true
+	}, function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return callback(err || new Error("HTTP error " + response.statusCode));
+		}
+		
+		if(!body || !body.success || !body.rgInventory || !body.rgDescriptions || !body.rgCurrency) {
+			return callback(new Error("Malformed response"));
+		}
+		
+		this._digestDescriptions(body.rgDescriptions);
+		
+		data = (data || []).concat(this._mapItemsToDescriptions(appid, contextid, body.rgInventory)).concat(this._mapItemsToDescriptions(appid, contextid, body.rgCurrency));
+		if(body.more) {
+			this.loadInventory(appid, contextid, tradableOnly, callback, data, body.more_start);
+		} else {
+			callback(null, data);
+		}
+	}.bind(this));
+};
+
 function makeAnError(error, callback) {
 	if(callback) {
 		callback(error);
