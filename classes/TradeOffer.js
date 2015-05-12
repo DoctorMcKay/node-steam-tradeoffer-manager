@@ -157,7 +157,8 @@ TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback,
 			"partner": this.partner.toString(),
 			"appid": appid,
 			"contextid": contextid,
-			"start": start
+			"start": start,
+			"l": this._languageName
 		},
 		"headers": {
 			"referer": "https://steamcommunity.com/tradeoffer/" + (this.id ? this.id : 'new') + "/?partner=" + this.partner.accountid
@@ -172,7 +173,9 @@ TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback,
 			return callback(new Error("Malformed response"));
 		}
 		
-		data = (data || []).concat(mergeWithDescriptions(body.rgInventory, body.rgDescriptions, contextid)).concat(mergeWithDescriptions(body.rgCurrency, body.rgDescriptions, contextid));
+		this._digestDescriptions(body.rgDescriptions);
+		
+		data = (data || []).concat(this._mapItemsToDescriptions(appid, contextid, body.rgInventory)).concat(this._mapItemsToDescriptions(appid, contextid, body.rgCurrency));
 		if(body.more) {
 			this.loadPartnerInventory(appid, contextid, callback, data, body.more_start);
 		} else {
@@ -180,19 +183,6 @@ TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback,
 		}
 	}.bind(this));
 };
-
-function mergeWithDescriptions(items, descriptions, contextid) {
-	return Object.keys(items).map(function(id) {
-		var item = items[id];
-		var description = descriptions[item.classid + '_' + (item.instanceid || '0')];
-		for (var key in description) {
-			item[key] = description[key];
-		}
-		// add contextid because Steam is retarded
-		item.contextid = contextid;
-		return item;
-	});
-}
 
 TradeOffer.prototype.send = function(message, token, callback) {
 	if(this.id) {

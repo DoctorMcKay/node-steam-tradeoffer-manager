@@ -30,8 +30,6 @@ TradeOfferManager.prototype._mapItemsToDescriptions = function(appid, contextid,
 			item[i] = cache[key][i];
 		}
 		
-		console.log(cache[key]);
-		
 		return item;
 	});
 };
