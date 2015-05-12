@@ -11,6 +11,16 @@ function TradeOfferManager(steam, domain, language) {
 	this._community = new SteamCommunity();
 	this._domain = domain || 'localhost';
 	this._language = language;
+	this._languageName = null;
+	
+	if(language) {
+		var lang = require('languages').getLanguageInfo(language);
+		if(!lang.name) {
+			this._language = null;
+		} else {
+			this._languageName = lang.name.toLowerCase();
+		}
+	}
 	
 	this._request = this._community._request; // I probably shouldn't be doing this...
 	
