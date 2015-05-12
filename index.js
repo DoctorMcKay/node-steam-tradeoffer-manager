@@ -24,6 +24,8 @@ function TradeOfferManager(steam, domain, language) {
 	
 	this._request = this._community._request; // I probably shouldn't be doing this...
 	
+	this._assetCache = {};
+	
 	this.apiKey = null;
 }
 
@@ -66,4 +68,5 @@ function makeAnError(error, callback) {
 }
 
 require('./webapi.js');
+require('./assets.js');
 require('./classes/TradeOffer.js');

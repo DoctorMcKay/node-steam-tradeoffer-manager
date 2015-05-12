@@ -1,5 +1,6 @@
 var TradeOfferManager = require('../index.js');
 var SteamID = require('steamid');
+var Async = require('async');
 
 var ETradeOfferState = TradeOfferManager.ETradeOfferState;
 var EOfferFilter = TradeOfferManager.EOfferFilter;
@@ -12,6 +13,7 @@ TradeOfferManager.prototype.createOffer = function(partner) {
 };
 
 TradeOfferManager.prototype.getOffer = function(id, callback) {
+	var manager = this;
 	this._apiCall('GET', 'GetTradeOffer', 1, {"tradeofferid": id}, function(err, body) {
 		if(err) {
 			return callback(err);
@@ -25,8 +27,15 @@ TradeOfferManager.prototype.getOffer = function(id, callback) {
 			return callback(new Error("No matching offer found"));
 		}
 		
-		callback(null, createOfferFromData(this, body.response.offer));
-	}.bind(this));
+		manager._digestDescriptions(body.response.descriptions);
+		checkNeededDescriptions(manager, [body.response.offer], function(err) {
+			if(err) {
+				return callback(err);
+			}
+			
+			callback(null, createOfferFromData(manager, body.response.offer));
+		});
+	});
 };
 
 TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callback) {
@@ -57,15 +66,22 @@ TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callb
 			return callback(new Error("Malformed API response"));
 		}
 		
-		var sent = (body.response.trade_offers_sent || []).map(function(data) {
-			return createOfferFromData(manager, data);
+		manager._digestDescriptions(body.response.descriptions);
+		checkNeededDescriptions(manager, (body.response.trade_offers_sent || []).concat(body.response.trade_offers_received || []), function(err) {
+			if(err) {
+				return callback(err);
+			}
+			
+			var sent = (body.response.trade_offers_sent || []).map(function(data) {
+				return createOfferFromData(manager, data);
+			});
+			
+			var received = (body.response.trade_offers_received || []).map(function(data) {
+				return createOfferFromData(manager, data);
+			});
+			
+			callback(null, sent, received);
 		});
-		
-		var received = (body.response.trade_offers_received || []).map(function(data) {
-			return createOfferFromData(manager, data);
-		});
-		
-		callback(null, sent, received);
 	});
 };
 
@@ -83,7 +99,33 @@ function createOfferFromData(manager, data) {
 	offer.tradeID = data.tradeid || null;
 	offer.fromRealTimeTrade = data.from_real_time_trade;
 	
+	if(manager._language) {
+		offer.itemsToGive = manager._mapItemsToDescriptions(null, null, offer.itemsToGive);
+		offer.itemsToReceive = manager._mapItemsToDescriptions(null, null, offer.itemsToReceive);
+	}
+	
 	return offer;
+}
+
+function checkNeededDescriptions(manager, offers, callback) {
+	if(!manager._language) {
+		return callback();
+	}
+	
+	var items = [];
+	offers.forEach(function(offer) {
+		(offer.items_to_give || []).concat(offer.items_to_receive || []).forEach(function(item) {
+			if(!manager._hasDescription(item)) {
+				items.push(item);
+			}
+		});
+	});
+	
+	if(!items.length) {
+		return callback();
+	}
+	
+	manager._requestDescriptions(items, callback);
 }
 
 function TradeOffer(manager, partner) {

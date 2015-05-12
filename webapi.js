@@ -15,10 +15,9 @@ TradeOfferManager.prototype._apiCall = function(httpMethod, method, version, inp
 		"method": httpMethod
 	};
 	
-	options[httpMethod == 'GET' ? 'qs' : 'form'] = {
-		"key": this.apiKey,
-		"input_json": JSON.stringify(input || {})
-	};
+	input = input || {};
+	input.key = this.apiKey;
+	options[httpMethod == 'GET' ? 'qs' : 'form'] = input;
 	
 	this._request(options, function(err, response, body) {
 		if(err || response.statusCode != 200) {
@@ -34,6 +33,6 @@ TradeOfferManager.prototype._apiCall = function(httpMethod, method, version, inp
 			return callback(new Error("Invalid API response"));
 		}
 		
-		callback(null, body);
+		return callback(null, body);
 	});
 };
