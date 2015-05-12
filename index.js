@@ -23,7 +23,11 @@ TradeOfferManager.prototype.setCookies = function(cookies, callback) {
 };
 
 TradeOfferManager.prototype.parentalUnlock = function(pin, callback) {
-	this._community.parentalUnlock(pin, callback);
+	this._community.parentalUnlock(pin, function(err) {
+		if(err && callback) {
+			callback(new Error(err));
+		}
+	});
 };
 
 TradeOfferManager.prototype._checkApiKey = function(callback) {
