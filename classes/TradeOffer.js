@@ -17,8 +17,12 @@ TradeOfferManager.prototype.getOffer = function(id, callback) {
 			return callback(err);
 		}
 		
-		if(!body.response || !body.response.offer) {
+		if(!body.response) {
 			return callback(new Error("Malformed API response"));
+		}
+		
+		if(!body.response.offer) {
+			return callback(new Error("No matching offer found"));
 		}
 		
 		callback(null, createOfferFromData(this, body.response.offer));
