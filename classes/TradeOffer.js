@@ -343,13 +343,7 @@ TradeOffer.prototype.getReceivedItems = function(callback) {
 
 
 function makeAnError(error, callback) {
-	if(typeof callback === 'boolean' && !callback) {
-		return;
-	}
-	
-	if(typeof callback === 'function') {
+	if(callback) {
 		callback(error);
-	} else {
-		throw error;
 	}
 }
