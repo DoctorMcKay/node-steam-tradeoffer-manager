@@ -103,18 +103,16 @@ function TradeOffer(manager, partner) {
 }
 
 TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback, data, start) {
-	this._request('https://steamcommunity.com/tradeoffer/' + (this.id ? this.id : 'new') + '/partnerinventory/', {
+	this._manager._request('https://steamcommunity.com/tradeoffer/' + (this.id ? this.id : 'new') + '/partnerinventory/', {
 		"qs": {
-			"sessionid": this._community.getSessionID(),
+			"sessionid": this._manager._community.getSessionID(),
 			"partner": this.partner.toString(),
 			"appid": appid,
 			"contextid": contextid,
 			"start": start
 		},
 		"headers": {
-			"referer": {
-				"https://steamcommunity.com/tradeoffer/" + (this.id ? this.id : 'new') + "/?partner=" + this.partner.accountid
-			}
+			"referer": "https://steamcommunity.com/tradeoffer/" + (this.id ? this.id : 'new') + "/?partner=" + this.partner.accountid
 		},
 		"json": true
 	}, function(err, response, body) {
@@ -196,7 +194,7 @@ TradeOffer.prototype.send = function(message, token, callback) {
 	
 	this._request.post('https://steamcommunity.com/tradeoffer/new/send', {
 		"headers": {
-			"referer": "https://steamcommunity.com/tradeoffer/new/?partner=" + this.partner.accountid + (token ? "&token=" + token)
+			"referer": "https://steamcommunity.com/tradeoffer/new/?partner=" + this.partner.accountid + (token ? "&token=" + token : '')
 		},
 		"json": true,
 		"form": {
