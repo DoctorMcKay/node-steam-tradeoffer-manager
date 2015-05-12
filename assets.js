@@ -4,6 +4,14 @@ var Async = require('async');
 TradeOfferManager.prototype._digestDescriptions = function(descriptions) {
 	var cache = this._assetCache;
 	
+	if(!this._language) {
+		return;
+	}
+	
+	if(!(descriptions instanceof Array)) {
+		descriptions = Object.keys(descriptions).map(function(key) { return descriptions[key]; });
+	}
+	
 	(descriptions || []).forEach(function(item) {
 		if(!item || !item.appid || !item.classid) {
 			return;
@@ -16,9 +24,19 @@ TradeOfferManager.prototype._digestDescriptions = function(descriptions) {
 TradeOfferManager.prototype._mapItemsToDescriptions = function(appid, contextid, items) {
 	var cache = this._assetCache;
 	
+	if(!(items instanceof Array)) {
+		items = Object.keys(items).map(function(key) { return items[key]; });
+	}
+	
 	return items.map(function(item) {
 		item.appid = appid || item.appid;
 		item.contextid = contextid || item.contextid;
+		
+		if(item.id) {
+			item.assetid = item.id;
+		} else if(item.assetid) {
+			item.id = item.assetid;
+		}
 		
 		var key = item.appid + '_' + item.classid + '_' + (item.instanceid || '0');
 		if(!cache[key]) {
