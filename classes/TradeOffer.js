@@ -32,7 +32,9 @@ TradeOfferManager.prototype.getOffer = function(id, callback) {
 TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callback) {
 	if(typeof historicalCutoff === 'function') {
 		callback = historicalCutoff;
-		historicalCutoff = new Date(Date.now() + (31536000000));
+		historicalCutoff = new Date(Date.now() + 31536000000);
+	} else if(!historicalCutoff) {
+		historicalCutoff = new Date(Date.now() + 31536000000);
 	}
 	
 	var options = {
