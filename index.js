@@ -32,6 +32,10 @@ function TradeOfferManager(steam, domain, language, pollInterval) {
 }
 
 TradeOfferManager.prototype.setCookies = function(cookies, callback) {
+	if(this._languageName) {
+		cookies = cookies.concat(['Steam_Language=' + this._languageName]);
+	}
+	
 	this._community.setCookies(cookies);
 	this._checkApiKey(function(err) {
 		if(!err) {
