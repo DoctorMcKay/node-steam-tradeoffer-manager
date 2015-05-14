@@ -53,7 +53,7 @@ TradeOfferManager.prototype.getOffers = function(filter, historicalCutoff, callb
 		"language": this._language,
 		"active_only": filter == EOfferFilter.ActiveOnly ? 1 : 0,
 		"historical_only": filter == EOfferFilter.HistoricalOnly ? 1 : 0,
-		"time_historical_cutoff": Math.floor(historicalCutoff.getTime())
+		"time_historical_cutoff": Math.floor(historicalCutoff.getTime() / 1000)
 	};
 	
 	var manager = this;
