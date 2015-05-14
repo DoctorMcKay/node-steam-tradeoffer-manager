@@ -374,7 +374,36 @@ TradeOffer.prototype.getReceivedItems = function(callback) {
 		return makeAnError(new Error("Offer #" + this.id + " is accepted, but does not have a trade ID"), callback);
 	}
 	
-	// TODO
+	// Borrowed from node-steam-trade (https://github.com/seishun/node-steam-trade/blob/master/index.js#L86-L119)
+	this._request.get('https://steamcommunity.com/trade/' + this.tradeID + '/receipt/', function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return makeAnError(err || new Error(response.statusCode), callback);
+		}
+		
+		var script = body.match(/(var oItem;[\s\S]*)<\/script>/);
+		if (!script) {
+			// no session
+			return makeAnError(new Error('No session'), callback);
+		}
+		
+		var items = [];
+		
+		// prepare to execute the script in the page
+		var UserYou;
+		function BuildHover(str, item) {
+			items.push(item);
+		}
+		function $() {
+			return {
+				show: function() {}
+			};
+		}
+		
+		// evil magic happens here
+		eval(script[1]);
+		
+		callback(null, items);
+	});
 };
 
 
