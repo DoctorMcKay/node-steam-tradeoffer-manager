@@ -6,6 +6,8 @@ TradeOfferManager.SteamID = require('steamid');
 TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
 TradeOfferManager.EOfferFilter = require('./resources/EOfferFilter.js');
 
+require('util').inherits(TradeOfferManager, require('events').EventEmitter);
+
 function TradeOfferManager(steam, domain, language, pollInterval) {
 	this._steam = steam;
 	this._community = new SteamCommunity();
@@ -14,6 +16,7 @@ function TradeOfferManager(steam, domain, language, pollInterval) {
 	this._languageName = null;
 	this._pollInterval = pollInterval || 30000;
 	this._pollTimer = null;
+	this.pollData = {};
 	
 	if(language) {
 		var lang = require('languages').getLanguageInfo(language);
@@ -22,6 +25,12 @@ function TradeOfferManager(steam, domain, language, pollInterval) {
 		} else {
 			this._languageName = lang.name.toLowerCase();
 		}
+	}
+	
+	if(this._steam) {
+		this._steam.on('tradeOffers', function(count) {
+			this._doPoll();
+		}.bind(this));
 	}
 	
 	this._request = this._community._request; // I probably shouldn't be doing this...
@@ -115,4 +124,5 @@ function makeAnError(error, callback) {
 
 require('./webapi.js');
 require('./assets.js');
+require('./polling.js');
 require('./classes/TradeOffer.js');
