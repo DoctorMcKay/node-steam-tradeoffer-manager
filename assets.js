@@ -8,7 +8,7 @@ TradeOfferManager.prototype._digestDescriptions = function(descriptions) {
 		return;
 	}
 	
-	if(!(descriptions instanceof Array)) {
+	if(descriptions && !(descriptions instanceof Array)) {
 		descriptions = Object.keys(descriptions).map(function(key) { return descriptions[key]; });
 	}
 	
