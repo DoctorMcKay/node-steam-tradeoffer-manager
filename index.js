@@ -119,10 +119,6 @@ TradeOfferManager.prototype.loadInventory = function(appid, contextid, tradableO
 	}.bind(this));
 };
 
-TradeOfferManager.prototype._doPoll = function() {
-	// TODO
-};
-
 function makeAnError(error, callback) {
 	if(callback) {
 		callback(error);
