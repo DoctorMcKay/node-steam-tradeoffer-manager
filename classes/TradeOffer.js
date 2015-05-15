@@ -270,13 +270,13 @@ TradeOffer.prototype.send = function(message, token, callback) {
 		params.trade_offer_access_token = token;
 	}
 	
-	this._request.post('https://steamcommunity.com/tradeoffer/new/send', {
+	this._manager._request.post('https://steamcommunity.com/tradeoffer/new/send', {
 		"headers": {
 			"referer": "https://steamcommunity.com/tradeoffer/new/?partner=" + this.partner.accountid + (token ? "&token=" + token : '')
 		},
 		"json": true,
 		"form": {
-			"sessionid": this._community.getSessionID(),
+			"sessionid": this._manager._community.getSessionID(),
 			"serverid": 1,
 			"partner": this.partner.toString(),
 			"tradeoffermessage": message,
@@ -360,13 +360,13 @@ TradeOffer.prototype.accept = function(callback) {
 		return makeAnError(new Error("Cannot accept our own offer #" + this.id), callback);
 	}
 	
-	this._request.post('https://steamcommunity.com/tradeoffer/' + this.id + '/accept', {
+	this._manager._request.post('https://steamcommunity.com/tradeoffer/' + this.id + '/accept', {
 		"headers": {
 			"referer": 'https://steamcommunity.com/tradeoffer/' + this.id + '/'
 		},
 		"json": true,
 		"form": {
-			"sessionid": this._community.getSessionID(),
+			"sessionid": this._manager._community.getSessionID(),
 			"serverid": 1,
 			"tradeofferid": this.id,
 			"partner": this.partner.toString(),
