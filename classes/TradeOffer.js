@@ -184,6 +184,46 @@ TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback,
 	}.bind(this));
 };
 
+TradeOffer.prototype.addMyItem = function(item) {
+	addItem(item, this, this.itemsToGive);
+};
+
+TradeOffer.prototype.addMyItems = function(items) {
+	items.forEach(this.addMyItem.bind(this));
+};
+
+TradeOffer.prototype.addTheirItem = function(item) {
+	addItem(item, this, this.itemsToReceive);
+};
+
+TradeOffer.prototype.addTheirItems = function(items) {
+	items.forEach(this.addTheirItem.bind(this));
+};
+
+function addItem(details, offer, list) {
+	if(offer.id) {
+		throw new Error("Cannot add items to an already-sent offer");
+	}
+	
+	var item = {
+		"assetid": details.assetid || details.id,
+		"appid": details.appid,
+		"contextid": details.contextid,
+		"amount": details.amount || 1
+	};
+	
+	if(!item.appid || !item.contextid || !item.assetid) {
+		throw new Error("Missing appid, contextid, or assetid parameter");
+	}
+	
+	if(list.some(function(tradeItem) { return tradeItem.assetid == item.assetid; })) {
+		// Already in trade
+		return;
+	}
+	
+	list.push(item);
+}
+
 TradeOffer.prototype.send = function(message, token, callback) {
 	if(this.id) {
 		return makeAnError(new Error("This offer has already been sent"), callback);
