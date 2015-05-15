@@ -16,6 +16,7 @@ function TradeOfferManager(steam, domain, language, pollInterval) {
 	this._languageName = null;
 	this._pollInterval = pollInterval || 30000;
 	this._pollTimer = null;
+	this._lastPoll = 0;
 	this.pollData = {};
 	
 	if(language) {

@@ -4,11 +4,18 @@ var EOfferFilter = TradeOfferManager.EOfferFilter;
 TradeOfferManager.prototype._doPoll = function() {
 	clearTimeout(this._pollTimer);
 	
+	if(Date.now() - this._lastPoll < 1000) {
+		// We last polled less than a second ago, don't spam the API
+		resetTimer();
+		
+		return;
+	}
+	
 	this.emit('debug', 'Doing trade offer poll since ' + this.pollData.offersSince);
 	this.getOffers(EOfferFilter.ActiveOnly, new Date(this.pollData.offersSince * 1000), function(err, sent, received) {
 		if(err) {
 			this.emit('debug', "Error getting trade offers for poll: " + err.message);
-			this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+			resetTimer();
 			return;
 		}
 		
@@ -50,6 +57,12 @@ TradeOfferManager.prototype._doPoll = function() {
 		this.pollData.offersSince = latest;
 		this.emit('pollData', this.pollData);
 		
-		this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+		resetTimer();
 	}.bind(this));
+	
+	function resetTimer() {
+		if(this._pollInterval >= 1000) {
+			this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+		}
+	}.bind(this);
 };
