@@ -36,7 +36,7 @@ TradeOfferManager.prototype._doPoll = function() {
 		received.forEach(function(offer) {
 			if(!offers[offer.id] && offer.state == ETradeOfferState.Active) {
 				this.emit('newOffer', offer);
-			} else if(offer.state != offers[offer.id]) {
+			} else if(offers[offer.id] && offer.state != offers[offer.id]) {
 				this.emit('receivedOfferChanged', offer, offers[offer.id]);
 			}
 			
