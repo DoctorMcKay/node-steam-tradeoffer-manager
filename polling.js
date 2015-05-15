@@ -1,4 +1,5 @@
 var TradeOfferManager = require('./index.js');
+var ETradeOfferState = TradeOfferManager.ETradeOfferState;
 var EOfferFilter = TradeOfferManager.EOfferFilter;
 
 TradeOfferManager.prototype._doPoll = function() {
@@ -33,7 +34,7 @@ TradeOfferManager.prototype._doPoll = function() {
 		offers = this.pollData.received || {};
 		
 		received.forEach(function(offer) {
-			if(!offers[offer.id]) {
+			if(!offers[offer.id] && offer.state == ETradeOfferState.Active) {
 				this.emit('newOffer', offer);
 			} else if(offer.state != offers[offer.id]) {
 				this.emit('receivedOfferChanged', offer, offers[offer.id]);
