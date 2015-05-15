@@ -45,7 +45,7 @@ TradeOfferManager.prototype._doPoll = function() {
 		this.pollData.received = offers;
 		
 		// Find the latest update time
-		var latest = 0;
+		var latest = this.pollData.offersSince || 0;
 		sent.concat(received).forEach(function(offer) {
 			var updated = Math.floor(offer.updated.getTime() / 1000);
 			if(updated > latest) {
