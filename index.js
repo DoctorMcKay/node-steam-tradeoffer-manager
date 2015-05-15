@@ -6,6 +6,16 @@ TradeOfferManager.SteamID = require('steamid');
 TradeOfferManager.ETradeOfferState = require('./resources/ETradeOfferState.js');
 TradeOfferManager.EOfferFilter = require('./resources/EOfferFilter.js');
 
+TradeOfferManager.getStateName = function(state) {
+	for(var i in TradeOfferManager.ETradeOfferState) {
+		if(TradeOfferManager.ETradeOfferState[i] == state) {
+			return i;
+		}
+	}
+	
+	return state;
+};
+
 require('util').inherits(TradeOfferManager, require('events').EventEmitter);
 
 function TradeOfferManager(steam, domain, language, pollInterval) {
