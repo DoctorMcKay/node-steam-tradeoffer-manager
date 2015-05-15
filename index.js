@@ -129,6 +129,21 @@ TradeOfferManager.prototype.loadInventory = function(appid, contextid, tradableO
 	}.bind(this));
 };
 
+TradeOfferManager.prototype.getOfferToken = function(callback) {
+	this._request("https://steamcommunity.com/my/tradeoffers/privacy", function(err, response, body) {
+		if(err || response.statusCode != 200) {
+			return callback(err || new Error("HTTP error " + response.statusCode));
+		}
+		
+		var match = body.match(/https?:\/\/(www.)?steamcommunity.com\/tradeoffer\/new\/?\?partner=\d+(&|&amp;)token=([a-zA-Z0-9]+)/);
+		if(match) {
+			callback(null, match[3]);
+		} else {
+			callback(new Error("Malformed response"));
+		}
+	});
+};
+
 function makeAnError(error, callback) {
 	if(callback) {
 		callback(error);
