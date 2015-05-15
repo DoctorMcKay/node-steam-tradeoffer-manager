@@ -173,9 +173,9 @@ TradeOffer.prototype.loadPartnerInventory = function(appid, contextid, callback,
 			return callback(new Error("Malformed response"));
 		}
 		
-		this._digestDescriptions(body.rgDescriptions);
+		this._manager._digestDescriptions(body.rgDescriptions);
 		
-		data = (data || []).concat(this._mapItemsToDescriptions(appid, contextid, body.rgInventory)).concat(this._mapItemsToDescriptions(appid, contextid, body.rgCurrency));
+		data = (data || []).concat(this._manager._mapItemsToDescriptions(appid, contextid, body.rgInventory)).concat(this._manager._mapItemsToDescriptions(appid, contextid, body.rgCurrency));
 		if(body.more) {
 			this.loadPartnerInventory(appid, contextid, callback, data, body.more_start);
 		} else {
