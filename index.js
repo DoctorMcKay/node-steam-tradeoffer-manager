@@ -31,6 +31,12 @@ function TradeOfferManager(steam, domain, language, pollInterval) {
 		this._steam.on('tradeOffers', function(count) {
 			this._doPoll();
 		}.bind(this));
+		
+		// We don't have access to the Steam namespace, so we'll need to use a hardcoded value
+		// UPDATE THIS if node-steam ever handles the ClientItemAnnouncements msg
+		this._steam._handlers[5576] = function(data) {
+			this._doPoll();
+		}.bind(this);
 	}
 	
 	this._request = this._community._request; // I probably shouldn't be doing this...
