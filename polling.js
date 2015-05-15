@@ -6,8 +6,7 @@ TradeOfferManager.prototype._doPoll = function() {
 	
 	if(Date.now() - this._lastPoll < 1000) {
 		// We last polled less than a second ago, don't spam the API
-		resetTimer();
-		
+		this._resetPollTimer();
 		return;
 	}
 	
@@ -15,7 +14,7 @@ TradeOfferManager.prototype._doPoll = function() {
 	this.getOffers(EOfferFilter.ActiveOnly, new Date(this.pollData.offersSince * 1000), function(err, sent, received) {
 		if(err) {
 			this.emit('debug', "Error getting trade offers for poll: " + err.message);
-			resetTimer();
+			this._resetPollTimer();
 			return;
 		}
 		
@@ -57,12 +56,12 @@ TradeOfferManager.prototype._doPoll = function() {
 		this.pollData.offersSince = latest;
 		this.emit('pollData', this.pollData);
 		
-		resetTimer();
+		this._resetPollTimer();
 	}.bind(this));
-	
-	function resetTimer() {
-		if(this._pollInterval >= 1000) {
-			this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
-		}
-	}.bind(this);
+};
+
+TradeOfferManager.prototype._resetPollTimer = function() {
+	if(this._pollInterval >= 1000) {
+		this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+	}
 };
