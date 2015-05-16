@@ -306,6 +306,10 @@ TradeOffer.prototype.send = function(message, token, callback) {
 			this.state = ETradeOfferState.EmailPending;
 		}
 		
+		this._manager.pollData.sent = this._manager.pollData.sent || {};
+		this._manager.pollData.sent[this.id] = this.state;
+		this._manager.emit('pollData', this._manager.pollData);
+		
 		if(!callback) {
 			return;
 		}
