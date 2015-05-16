@@ -66,7 +66,7 @@ TradeOfferManager.prototype.setCookies = function(cookies, callback) {
 	this._checkApiKey(function(err) {
 		if(!err) {
 			if(!this._pollTimer && this._pollInterval >= 1000) {
-				this._pollTimer = setTimeout(this._doPoll.bind(this), this._pollInterval);
+				this._doPoll();
 			}
 		}
 		
