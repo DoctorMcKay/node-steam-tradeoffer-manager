@@ -286,7 +286,7 @@ TradeOffer.prototype.send = function(message, token, callback) {
 		}
 	}, function(err, response, body) {
 		if(err || response.statusCode != 200) {
-			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback);
+			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback, body);
 		}
 		
 		if(body && body.strError) {
@@ -374,7 +374,7 @@ TradeOffer.prototype.accept = function(callback) {
 		}
 	}, function(err, response, body) {
 		if(err || response.statusCode != 200) {
-			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback);
+			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback, body);
 		}
 		
 		if(body && body.strError) {
@@ -447,8 +447,12 @@ TradeOffer.prototype.getReceivedItems = function(callback) {
 };
 
 
-function makeAnError(error, callback) {
+function makeAnError(error, callback, body) {
 	if(callback) {
-		callback(error);
+		if(body && body.strError) {
+			callback(new Error(body.strError));
+		} else {
+			callback(error);
+		}
 	}
 }
