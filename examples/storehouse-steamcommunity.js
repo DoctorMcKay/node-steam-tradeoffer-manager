@@ -62,7 +62,7 @@ manager.on('newOffer', function(offer) {
 manager.on('receivedOfferChanged', function(offer, oldState) {
 	console.log("Offer #" + offer.id + " changed: " + TradeOfferManager.getStateName(oldState) + " -> " + TradeOfferManager.getStateName(offer.state));
 	
-	if(offer.state = TradeOfferManager.ETradeOfferState.Accepted) {
+	if(offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
 		offer.getReceivedItems(function(err, items) {
 			if(err) {
 				console.log("Couldn't get received items: " + err);
