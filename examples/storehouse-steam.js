@@ -5,7 +5,7 @@
  */
 
 var Steam = require('steam');
-var TradeOfferManager = require('../index.js'); // use require('steam-tradeoffer-manager') in production
+var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
 var fs = require('fs');
 
 var client = new Steam.SteamClient();

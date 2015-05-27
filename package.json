@@ -2,7 +2,7 @@
 	"name": "steam-tradeoffer-manager",
 	"version": "0.1.3",
 	"description": "A simple trade offers API for Steam",
-	"main": "index.js",
+	"main": "./lib/index.js",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager.git"
