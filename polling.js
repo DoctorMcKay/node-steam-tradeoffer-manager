@@ -55,6 +55,29 @@ TradeOfferManager.prototype._doPoll = function() {
 		});
 		
 		this.pollData.offersSince = latest;
+		
+		// Check if any offers which we want to accept are still Active
+		if(this.pollData.toAccept) {
+			var offer, offerID, lastAttempt;
+			for(offerID in this.pollData.toAccept) {
+				offer = received.filter(function(item) {
+					return item.id == offerID;
+				});
+				
+				if(!offer[0] || offer[0].state != ETradeOfferState.Active) {
+					// It's no longer active, so we're done here
+					delete this.pollData.toAccept[offerID];
+					continue;
+				}
+				
+				if(Date.now() - this.pollData.toAccept[offerID] > 60000) {
+					// We last tried to accept this offer over a minute ago. Try again.
+					this.pollData.toAccept[offerID] = Date.now();
+					offer[0].accept();
+				}
+			}
+		}
+		
 		this.emit('pollData', this.pollData);
 		
 		this._resetPollTimer();

@@ -1,6 +1,5 @@
 var TradeOfferManager = require('../index.js');
 var SteamID = require('steamid');
-var Async = require('async');
 
 var ETradeOfferState = TradeOfferManager.ETradeOfferState;
 var EOfferFilter = TradeOfferManager.EOfferFilter;
@@ -378,10 +377,12 @@ TradeOffer.prototype.accept = function(callback) {
 		}
 	}, function(err, response, body) {
 		if(err || response.statusCode != 200) {
+			addAcceptToPollData(this._manager, this.id);
 			return makeAnError(err || new Error("HTTP error " + response.statusCode), callback, body);
 		}
 		
 		if(body && body.strError) {
+			addAcceptToPollData(this._manager, this.id);
 			return makeAnError(new Error(body.strError), callback);
 		}
 		
@@ -404,6 +405,13 @@ TradeOffer.prototype.accept = function(callback) {
 		}
 	}.bind(this));
 };
+
+function addAcceptToPollData(manager, offerID) {
+	manager.pollData = manager.pollData || {};
+	manager.pollData.toAccept = manager.pollData.toAccept || {};
+	manager.pollData.toAccept[offerID] = Date.now();
+	manager.emit('pollData', manager.pollData);
+}
 
 TradeOffer.prototype.getReceivedItems = function(callback) {
 	if(!this.id) {
