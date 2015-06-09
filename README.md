@@ -1,4 +1,4 @@
-# Steam Trade Offer Manager for node.js/io.js **BETA**
+# Steam Trade Offer Manager for node.js/io.js
 
 This module is designed to be a completely self-contained manager for [Steam trade offers](https://steamcommunity.com/my/tradeoffers).
 
