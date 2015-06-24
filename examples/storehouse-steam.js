@@ -9,7 +9,11 @@ var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeo
 var fs = require('fs');
 
 var client = new Steam.SteamClient();
-var manager = new TradeOfferManager(client, 'example.com', 'en'); // Our domain is example.com, and we want English item descriptions. Polling every 30 seconds is fine since we get notifications from Steam
+var manager = new TradeOfferManager({
+	"steam": client, // Polling every 30 seconds is fine since we get notifications from Steam
+	"domain": "example.com", // Our domain is example.com
+	"language": "en" // We want English item descriptions
+});
 
 // Steam logon options
 var logOnOptions = {
