@@ -1,0 +1,79 @@
+message GetTradeOffers_Request {
+	optional bool get_sent_offers = 1;
+	optional bool get_received_offers = 2;
+	optional bool get_descriptions = 3;
+	optional string language = 4;
+	optional bool active_only = 5;
+	optional bool historical_only = 6;
+	optional uint32 time_historical_cutoff = 7;
+}
+
+message GetTradeOffers_Response {
+	repeated .CTradeOffer trade_offers_sent = 1;
+	repeated .CTradeOffer trade_offers_received = 2;
+	repeated .CEconDescription descriptions = 3;
+}
+
+message GetTradeOffer_Request {
+	optional uint64 tradeofferid = 1;
+	optional string language = 2;
+}
+
+message GetTradeOffer_Response {
+	optional .CTradeOffer offer = 1;
+}
+
+message CTradeOffer {
+	optional uint64 tradeofferid = 1;
+	optional uint32 accountid_other = 2;
+	optional string message = 3;
+	optional uint32 expiration_time = 4;
+	optional int32 trade_offer_state = 5;
+	repeated .CEconItem items_to_give = 6;
+	repeated .CEconItem items_to_receive = 7;
+	optional bool is_our_offer = 8;
+	optional uint32 time_created = 9;
+	optional uint32 time_updated = 10;
+	optional fixed64 tradeid = 11;
+	optional bool from_real_time_trade = 12;
+}
+
+message CEconItem {
+	optional uint32 appid = 1;
+	optional uint64 contextid = 2;
+	optional uint64 assetid = 3;
+	optional uint64 classid = 4;
+	optional uint64 instanceid = 5;
+	optional int32 amount = 6;
+	optional bool missing = 7;
+}
+
+message CEconDescription {
+	message Description {
+		optional string type = 1;
+		optional string value = 2;
+		optional string color = 3;
+	}
+
+	message Action {
+		optional string link = 1;
+		optional string name = 2;
+	}
+
+	optional uint32 appid = 1;
+	optional uint64 classid = 2;
+	optional uint64 instanceid = 3;
+	optional bool currency = 4;
+	optional string background_color = 5;
+	optional string icon_url = 6;
+	optional string icon_url_large = 7;
+	repeated .CEconDescription.Description descriptions = 8;
+	optional bool tradable = 9;
+	repeated .CEconDescription.Action actions = 10;
+	optional string name = 14;
+	optional string name_color = 15;
+	optional string type = 16;
+	optional string market_name = 17;
+	optional string market_hash_name = 18;
+	optional bool commodity = 22;
+}
