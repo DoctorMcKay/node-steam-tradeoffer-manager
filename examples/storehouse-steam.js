@@ -1,14 +1,14 @@
 /**
  * STOREHOUSE - node-steam
  * 
- * Uses node-steam for notifications and accepts all incoming trade offers
+ * Uses node-steam-user for notifications and accepts all incoming trade offers
  */
 
-var Steam = require('steam');
+var SteamUser = require('steam-user');
 var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
 var fs = require('fs');
 
-var client = new Steam.SteamClient();
+var client = new SteamUser();
 var manager = new TradeOfferManager({
 	"steam": client, // Polling every 30 seconds is fine since we get notifications from Steam
 	"domain": "example.com", // Our domain is example.com
@@ -21,14 +21,6 @@ var logOnOptions = {
 	"password": "password"
 };
 
-var authCode = ''; // Steam Guard email auth code
-
-if(fs.existsSync('sentry')) {
-	logOnOptions.shaSentryfile = fs.readFileSync('sentry');
-} else if(authCode)  {
-	logOnOptions.authCode = authCode;
-}
-
 if(fs.existsSync('polldata.json')) {
 	manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
 }
@@ -39,21 +31,15 @@ client.on('loggedOn', function() {
 	console.log("Logged into Steam");
 });
 
-client.on('sentry', function(sentry) {
-	fs.writeFileSync('sentry', sentry);
-});
+client.on('webSession', function(sessionID, cookies) {
+	manager.setCookies(cookies, function(err) {
+		if(err) {
+			console.log(err);
+			process.exit(1); // Fatal error since we couldn't get our API key
+			return;
+		}
 
-client.on('webSessionID', function(sessionID) {
-	client.webLogOn(function(cookies) {
-		manager.setCookies(cookies, function(err) {
-			if(err) {
-				console.log(err);
-				process.exit(1); // Fatal error since we couldn't get our API key
-				return;
-			}
-			
-			console.log("Got API key: " + manager.apiKey);
-		});
+		console.log("Got API key: " + manager.apiKey);
 	});
 });
 
