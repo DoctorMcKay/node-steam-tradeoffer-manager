@@ -1,3 +1,4 @@
+// This message appears to be incorrect, specifically active_only and historical_only
 message GetTradeOffers_Request {
 	optional bool get_sent_offers = 1;
 	optional bool get_received_offers = 2;
