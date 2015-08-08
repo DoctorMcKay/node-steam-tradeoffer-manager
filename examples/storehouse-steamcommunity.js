@@ -34,6 +34,11 @@ if(fs.existsSync('polldata.json')) {
 }
 
 steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
+	if(err) {
+		console.log("Steam login fail: " + err.message);
+		process.exit(1);
+	}
+
 	fs.writeFile('steamguard.txt', steamguard);
 	
 	console.log("Logged into Steam");
