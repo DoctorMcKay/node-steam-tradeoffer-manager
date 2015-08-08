@@ -23,10 +23,8 @@ var logOnOptions = {
 
 var authCode = ''; // Steam Guard email auth code
 
-if(fs.existsSync('steamguard.json')) {
-	var steamguard = JSON.parse(fs.readFileSync('steamguard.json'));
-	logOnOptions.steamID = new SteamCommunity.SteamID(steamguard.steamID);
-	logOnOptions.sentry = steamguard.sentry;
+if(fs.existsSync('steamguard.txt')) {
+	logOnOptions.steamguard = fs.readFileSync('steamguard.txt').toString('utf8');
 } else if(authCode)  {
 	logOnOptions.authCode = authCode;
 }
@@ -36,8 +34,7 @@ if(fs.existsSync('polldata.json')) {
 }
 
 steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
-	steamguard.steamID = steamguard.steamID.toString();
-	fs.writeFile('steamguard.json', JSON.stringify(steamguard));
+	fs.writeFile('steamguard.txt', steamguard);
 	
 	console.log("Logged into Steam");
 	
