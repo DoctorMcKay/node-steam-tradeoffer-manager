@@ -26,6 +26,8 @@
 		"steamid": "^0.3.1",
 		"languages": "^0.1.3",
 		"async": "^1.4.2",
-		"protobufjs": "^4.0.0"
+		"protobufjs": "^4.0.0",
+		"deep-equal": "^1.0.1",
+		"clone": "^1.0.2"
 	}
 }
