@@ -1,6 +1,6 @@
 /**
  * STOREHOUSE - node-steam
- * 
+ *
  * Uses node-steam-user for notifications and accepts all incoming trade offers
  */
 

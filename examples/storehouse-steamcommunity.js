@@ -1,6 +1,6 @@
 /**
  * STOREHOUSE - node-steamcommunity
- * 
+ *
  * Uses node-steamcommunity to login to Steam and accepts all incoming trade offers
  */
 
@@ -25,7 +25,7 @@ var authCode = ''; // Steam Guard email auth code
 
 if(fs.existsSync('steamguard.txt')) {
 	logOnOptions.steamguard = fs.readFileSync('steamguard.txt').toString('utf8');
-} else if(authCode)  {
+} else if(authCode) {
 	logOnOptions.authCode = authCode;
 }
 
