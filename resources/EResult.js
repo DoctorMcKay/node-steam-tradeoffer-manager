@@ -54,8 +54,8 @@ module.exports = {
 	"DataCorruption": 53,
 	"DiskFull": 54,
 	"RemoteCallFailed": 55,
-	"PasswordNotSet": 56, // obsolete - renamed to PasswordUnset
 	"PasswordUnset": 56,
+	"PasswordNotSet": 56, // obsolete - renamed to PasswordUnset
 	"ExternalAccountUnlinked": 57,
 	"PSNTicketInvalid": 58,
 	"ExternalAccountAlreadyLinked": 59,
@@ -65,16 +65,16 @@ module.exports = {
 	"AccountLogonDenied": 63,
 	"CannotUseOldPassword": 64,
 	"InvalidLoginAuthCode": 65,
-	"AccountLogonDeniedNoMailSent": 66, // obsolete - renamed to AccountLogonDeniedNoMail
 	"AccountLogonDeniedNoMail": 66,
+	"AccountLogonDeniedNoMailSent": 66, // obsolete - renamed to AccountLogonDeniedNoMail
 	"HardwareNotCapableOfIPT": 67,
 	"IPTInitError": 68,
 	"ParentalControlRestricted": 69,
 	"FacebookQueryError": 70,
 	"ExpiredLoginAuthCode": 71,
 	"IPLoginRestrictionFailed": 72,
-	"AccountLocked": 73, // obsolete - renamed to AccountLockedDown
 	"AccountLockedDown": 73,
+	"AccountLocked": 73, // obsolete - renamed to AccountLockedDown
 	"AccountLogonDeniedVerifiedEmailRequired": 74,
 	"NoMatchingURL": 75,
 	"BadResponse": 76,
@@ -86,27 +86,32 @@ module.exports = {
 	"RestrictedDevice": 82,
 	"RegionLocked": 83,
 	"RateLimitExceeded": 84,
-	"AccountLogonDeniedNeedTwoFactorCode": 85, // obsolete - renamed to AccountLoginDeniedNeedTwoFactor
 	"AccountLoginDeniedNeedTwoFactor": 85,
-	"ItemOrEntryHasBeenDeleted": 86, // obsolete - renamed to ItemDeleted
+	"AccountLogonDeniedNeedTwoFactorCode": 85, // obsolete - renamed to AccountLoginDeniedNeedTwoFactor
 	"ItemDeleted": 86,
+	"ItemOrEntryHasBeenDeleted": 86, // obsolete - renamed to ItemDeleted
 	"AccountLoginDeniedThrottle": 87,
 	"TwoFactorCodeMismatch": 88,
 	"TwoFactorActivationCodeMismatch": 89,
-	"AccountAssociatedToMultiplePlayers": 90,
+	"AccountAssociatedToMultiplePartners": 90,
+	"AccountAssociatedToMultiplePlayers": 90, // obsolete - renamed to AccountAssociatedToMultiplePartners
 	"NotModified": 91,
 	"NoMobileDeviceAvailable": 92,
 	"TimeIsOutOfSync": 93,
 	"SMSCodeFailed": 94,
-	"TooManyAccountsAccessThisResource": 95, // obsolete - renamed to AccountLimitExceeded
 	"AccountLimitExceeded": 95,
+	"TooManyAccountsAccessThisResource": 95, // obsolete - renamed to AccountLimitExceeded
 	"AccountActivityLimitExceeded": 96,
-	"PhoneActivityLimitExceeded": 97
+	"PhoneActivityLimitExceeded": 97,
+	"RefundToWallet": 98,
+	"EmailSendFailure": 99,
+	"NotSettled": 100,
+	"NeedCaptcha": 101
 };
 
 module.exports.getName = function(result) {
 	for(var i in module.exports) {
-		if(module.exports[i] == result) {
+		if(module.exports.hasOwnProperty(i) && module.exports[i] == result) {
 			return i;
 		}
 	}
