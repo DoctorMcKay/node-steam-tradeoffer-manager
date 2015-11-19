@@ -7,6 +7,8 @@ module.exports = {
 	"Canceled": 6,          // The sender cancelled the offer
 	"Declined": 7,          // The recipient declined the offer
 	"InvalidItems": 8,      // Some of the items in the offer are no longer available (indicated by the missing flag in the output)
-	"EmailPending": 9,      // The offer hasn't been sent yet and is awaiting email confirmation
-	"EmailCanceled": 10     // Either party canceled the offer via email
+	"PendingConfirmation": 9, // The offer hasn't been sent yet and is awaiting further confirmation
+	"EmailPending": 9,      // (Obsolete)
+	"CanceledConfirmation": 10, // Either party canceled the offer via email/mobile confirmation
+	"EmailCanceled": 10     // (Obsolete)
 };
