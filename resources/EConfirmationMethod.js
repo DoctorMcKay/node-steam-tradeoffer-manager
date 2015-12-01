@@ -1,5 +1,6 @@
 module.exports = {
     "None": 0,
     "Email": 1,
-    "Mobile": 2
+    "MobileApp": 2,
+    "Mobile": 2 // (obsolete)
 };

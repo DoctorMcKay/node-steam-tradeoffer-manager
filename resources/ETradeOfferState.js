@@ -7,8 +7,11 @@ module.exports = {
 	"Canceled": 6,          // The sender cancelled the offer
 	"Declined": 7,          // The recipient declined the offer
 	"InvalidItems": 8,      // Some of the items in the offer are no longer available (indicated by the missing flag in the output)
-	"PendingConfirmation": 9, // The offer hasn't been sent yet and is awaiting further confirmation
+	"CreatedNeedsConfirmation": 9, // The offer hasn't been sent yet and is awaiting further confirmation
+	"PendingConfirmation": 9, // (Obsolete)
 	"EmailPending": 9,      // (Obsolete)
-	"CanceledConfirmation": 10, // Either party canceled the offer via email/mobile confirmation
-	"EmailCanceled": 10     // (Obsolete)
+	"CanceledBySecondFactor": 10, // Either party canceled the offer via email/mobile confirmation
+	"CanceledConfirmation": 10, // (Obsolete)
+	"EmailCanceled": 10,    // (Obsolete)
+	"InEscrow": 11          // The trade has been placed on hold
 };
