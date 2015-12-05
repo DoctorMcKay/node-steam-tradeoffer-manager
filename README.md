@@ -1,4 +1,4 @@
-# Steam Trade Offer Manager for node.js/io.js
+# Steam Trade Offer Manager for Node.js
 [![npm version](https://img.shields.io/npm/v/steam-tradeoffer-manager.svg)](https://npmjs.com/package/steam-tradeoffer-manager)
 [![npm downloads](https://img.shields.io/npm/dm/steam-tradeoffer-manager.svg)](https://npmjs.com/package/steam-tradeoffer-manager)
 [![dependencies](https://img.shields.io/david/DoctorMcKay/node-steam-tradeoffer-manager.svg)](https://david-dm.org/DoctorMcKay/node-steam-tradeoffer-manager)
