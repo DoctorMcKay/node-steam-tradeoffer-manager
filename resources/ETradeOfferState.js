@@ -15,3 +15,13 @@ module.exports = {
 	"EmailCanceled": 10,    // (Obsolete)
 	"InEscrow": 11          // The trade has been placed on hold
 };
+
+module.exports.getName = function(result) {
+	for(var i in module.exports) {
+		if(module.exports.hasOwnProperty(i) && module.exports[i] == result) {
+			return i;
+		}
+	}
+	
+	return 'Invalid';
+};
