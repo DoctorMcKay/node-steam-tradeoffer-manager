@@ -1,6 +1,6 @@
 {
 	"name": "steam-tradeoffer-manager",
-	"version": "1.17.1",
+	"version": "1.18.0",
 	"description": "A simple trade offers API for Steam",
 	"main": "./lib/index.js",
 	"repository": {
@@ -28,5 +28,8 @@
 		"async": "^1.4.2",
 		"deep-equal": "^1.0.1",
 		"clone": "^1.0.2"
+	},
+	"engines": {
+		"node": ">=4.0.0"
 	}
 }
