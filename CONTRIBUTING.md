@@ -1,4 +1,4 @@
-# Contributing to SteamUser
+# Contributing to TradeOfferManager
 
 Thanks for your interest in making `TradeOfferManager` better! I'd appreciate it if you read over this document quickly
 before you submit your issue or pull request. It'll make things go much smoother.
