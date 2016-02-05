@@ -1,10 +1,14 @@
 /**
  * STOREHOUSE - node-steam
  *
- * Uses node-steam-user for notifications and accepts all incoming trade offers
+ * Uses node-steam-user for notifications and accepts all incoming trade offers,
+ * 	node-steamcommunity for confirming trades,
+ * 	node-steam-totp to generate 2FA codes
  */
 
 var SteamUser = require('steam-user');
+var Steamcommunity = require('steamcommunity');
+var SteamTotp = require('steam-totp');
 var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
 var fs = require('fs');
 
@@ -14,11 +18,13 @@ var manager = new TradeOfferManager({
 	"domain": "example.com", // Our domain is example.com
 	"language": "en" // We want English item descriptions
 });
+var community = new Steamcommunity();
 
 // Steam logon options
 var logOnOptions = {
 	"accountName": "username",
-	"password": "password"
+	"password": "password",
+	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
 };
 
 if(fs.existsSync('polldata.json')) {
@@ -41,6 +47,9 @@ client.on('webSession', function(sessionID, cookies) {
 
 		console.log("Got API key: " + manager.apiKey);
 	});
+	
+	community.setCookies(cookies);
+	community.startConfirmationChecker(30000, "identitySecret"); // Checks and accepts confirmations every 30 seconds
 });
 
 manager.on('newOffer', function(offer) {
@@ -49,6 +58,7 @@ manager.on('newOffer', function(offer) {
 		if(err) {
 			console.log("Unable to accept offer: " + err.message);
 		} else {
+			community.checkConfirmations(); // Check for confirmations right after accepting the offer
 			console.log("Offer accepted");
 		}
 	});
