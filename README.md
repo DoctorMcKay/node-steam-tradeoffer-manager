@@ -14,6 +14,8 @@ your application.
 Install it from [npm](https://www.npmjs.com/package/steam-tradeoffer-manager) or check out the
 [wiki](https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/wiki) for documentation.
 
+**Have a question about the module or coding in general? *Do not create a GitHub issue.* GitHub issues are for feature requests and bug reports. Instead, post in the [Steam group](https://steamcommunity.com/groups/SteamRE/discussions/3/). Such issues may be ignored!**
+
 # Support
 
 Report bugs on the [issue tracker](https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues) or ask questions
