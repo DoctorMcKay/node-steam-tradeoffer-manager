@@ -1,10 +1,12 @@
 /**
  * STOREHOUSE - node-steamcommunity
  *
- * Uses node-steamcommunity to login to Steam and accepts all incoming trade offers
+ * Uses node-steamcommunity to login to Steam, accept and confirm all incoming trade offers,
+ * 	node-steam-totp to generate 2FA codes
  */
 
 var SteamCommunity = require('steamcommunity');
+var SteamTotp = require('steam-totp');
 var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
 var fs = require('fs');
 
@@ -18,15 +20,12 @@ var manager = new TradeOfferManager({
 // Steam logon options
 var logOnOptions = {
 	"accountName": "username",
-	"password": "password"
+	"password": "password",
+	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
 };
-
-var authCode = ''; // Steam Guard email auth code
 
 if(fs.existsSync('steamguard.txt')) {
 	logOnOptions.steamguard = fs.readFileSync('steamguard.txt').toString('utf8');
-} else if(authCode) {
-	logOnOptions.authCode = authCode;
 }
 
 if(fs.existsSync('polldata.json')) {
@@ -38,7 +37,7 @@ steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 		console.log("Steam login fail: " + err.message);
 		process.exit(1);
 	}
-
+	
 	fs.writeFile('steamguard.txt', steamguard);
 	
 	console.log("Logged into Steam");
@@ -52,6 +51,8 @@ steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 		
 		console.log("Got API key: " + manager.apiKey);
 	});
+	
+	steam.startConfirmationChecker(30000, "identitySecret"); // Checks and accepts confirmations every 30 seconds
 });
 
 manager.on('newOffer', function(offer) {
@@ -60,6 +61,7 @@ manager.on('newOffer', function(offer) {
 		if(err) {
 			console.log("Unable to accept offer: " + err.message);
 		} else {
+			steam.checkConfirmations(); // Check for confirmations right after accepting the offer
 			console.log("Offer accepted");
 		}
 	});
