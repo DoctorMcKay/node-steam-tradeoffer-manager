@@ -1,6 +1,6 @@
 {
 	"name": "steam-tradeoffer-manager",
-	"version": "1.20.2",
+	"version": "1.20.3",
 	"description": "A simple trade offers API for Steam",
 	"main": "./lib/index.js",
 	"repository": {
