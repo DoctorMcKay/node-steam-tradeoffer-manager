@@ -2,7 +2,7 @@
  * STOREHOUSE - node-steamcommunity
  *
  * Uses node-steamcommunity to login to Steam, accept and confirm all incoming trade offers,
- * 	node-steam-totp to generate 2FA codes
+ *    node-steam-totp to generate 2FA codes
  */
 
 var SteamCommunity = require('steamcommunity');
@@ -24,41 +24,41 @@ var logOnOptions = {
 	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
 };
 
-if(fs.existsSync('steamguard.txt')) {
+if (fs.existsSync('steamguard.txt')) {
 	logOnOptions.steamguard = fs.readFileSync('steamguard.txt').toString('utf8');
 }
 
-if(fs.existsSync('polldata.json')) {
+if (fs.existsSync('polldata.json')) {
 	manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
 }
 
 steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
-	if(err) {
+	if (err) {
 		console.log("Steam login fail: " + err.message);
 		process.exit(1);
 	}
-	
+
 	fs.writeFile('steamguard.txt', steamguard);
-	
+
 	console.log("Logged into Steam");
-	
+
 	manager.setCookies(cookies, function(err) {
-		if(err) {
+		if (err) {
 			console.log(err);
 			process.exit(1); // Fatal error since we couldn't get our API key
 			return;
 		}
-		
+
 		console.log("Got API key: " + manager.apiKey);
 	});
-	
+
 	steam.startConfirmationChecker(30000, "identitySecret"); // Checks and accepts confirmations every 30 seconds
 });
 
 manager.on('newOffer', function(offer) {
 	console.log("New offer #" + offer.id + " from " + offer.partner.getSteam3RenderedID());
 	offer.accept(function(err) {
-		if(err) {
+		if (err) {
 			console.log("Unable to accept offer: " + err.message);
 		} else {
 			steam.checkConfirmations(); // Check for confirmations right after accepting the offer
@@ -69,16 +69,16 @@ manager.on('newOffer', function(offer) {
 
 manager.on('receivedOfferChanged', function(offer, oldState) {
 	console.log("Offer #" + offer.id + " changed: " + TradeOfferManager.getStateName(oldState) + " -> " + TradeOfferManager.getStateName(offer.state));
-	
-	if(offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
+
+	if (offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
 		offer.getReceivedItems(function(err, items) {
-			if(err) {
+			if (err) {
 				console.log("Couldn't get received items: " + err);
 			} else {
 				var names = items.map(function(item) {
 					return item.name;
 				});
-				
+
 				console.log("Received: " + names.join(', '));
 			}
 		});
