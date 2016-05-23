@@ -106,7 +106,11 @@ module.exports = {
 	"RefundToWallet": 98,
 	"EmailSendFailure": 99,
 	"NotSettled": 100,
-	"NeedCaptcha": 101
+	"NeedCaptcha": 101,
+	"GSLTDenied": 102,
+	"GSOwnerDenied": 103,
+	"InvalidItemType": 104,
+	"IPBanned": 105
 };
 
 module.exports.getName = function(result) {
