@@ -68,7 +68,7 @@ manager.on('newOffer', function(offer) {
 });
 
 manager.on('receivedOfferChanged', function(offer, oldState) {
-	console.log("Offer #" + offer.id + " changed: " + TradeOfferManager.getStateName(oldState) + " -> " + TradeOfferManager.getStateName(offer.state));
+	console.log(`Offer #${offer.id} changed: ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOfferState[offer.state]}`);
 
 	if (offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
 		offer.getReceivedItems(function(err, items) {
