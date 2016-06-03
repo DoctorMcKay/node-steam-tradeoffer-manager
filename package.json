@@ -24,11 +24,16 @@
 	"dependencies": {
 		"steamcommunity": "^3.19.1",
 		"steamid": "^1.0.0",
-		"languages": "^0.1.3",
 		"async": "^1.4.2",
+		"languages": "^0.1.3",
 		"deep-equal": "^1.0.1",
 		"clone": "^1.0.2"
 	},
+	"bundledDependencies": [
+		"languages",
+		"deep-equal",
+		"clone"
+	],
 	"engines": {
 		"node": ">=4.0.0"
 	}
