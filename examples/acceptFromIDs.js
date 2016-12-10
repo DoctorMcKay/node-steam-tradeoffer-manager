@@ -2,15 +2,15 @@ var SteamUser = require('steam-user');
 var client = new SteamUser();
 var TradeOfferManager = require('steam-tradeoffer-manager');
 var config = {
-  "username": "",
-  "password": "",
-  "identitySecret": "",
-  "sharedSecret": "",
-  "acceptSteamIDS": [
-    "SteamID",
-    "SteamID",
-    "SteamID"
-  ]
+	"username": "",
+	"password": "",
+	"identitySecret": "",
+	"sharedSecret": "",
+	"acceptSteamIDS": [
+		"SteamID",
+		"SteamID",
+		"SteamID"
+  	]
 };
 var SteamTotp = require('steam-totp');
 var SteamCommunity = require('steamcommunity');
