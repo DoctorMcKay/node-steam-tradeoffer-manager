@@ -1,77 +1,63 @@
+// Required Modules
 const SteamUser = require('steam-user'),
-SteamTotp = require('steam-totp'),
-TradeOfferManager = require('steam-tradeoffer-manager'),
-SteamCommunity = require('steamcommunity');
-
-var client = new SteamUser(),
-community = new SteamCommunity(),
-manager = new TradeOfferManager({
-	"steam": client,
-	"domain": "nothinghere",
-	"language": "en"
+const SteamTotp = require('steam-totp'),
+const TradeOfferManager = require('steam-tradeoffer-manager'),
+const SteamCommunity = require('steamcommunity');
+ 
+// Initiate Modules
+let client = new SteamUser();
+let community = new SteamCommunity(),
+let manager = new TradeOfferManager({
+    "steam": client,
+    "domain": "nothinghere",
+    "language": "en"
 });
-
-var config = {
-	"username": "",
-	"password": "",
-	"identitySecret": "",
-	"sharedSecret": "",
-	"acceptSteamIDS": [
-		"SteamID",
-		"SteamID",
-		"SteamID"
-  	]
+ 
+let config = {
+    "username": "",
+    "password": "",
+    "identitySecret": "",
+    "sharedSecret": "",
+    "acceptSteamIDS": [
+        "SteamID",
+        "SteamID",
+        "SteamID"
+    ]
 };
-
-
-function logOn() {
-	client.logOn({
-		"accountName": config.username,
-		"password": config.password,
-		"twoFactorCode": SteamTotp.generateAuthCode(config.sharedSecret)
-	});
-}
-logOn();
-client.on('webSession', function(sessionID, cookies) {
-	manager.setCookies(cookies, function(err) {
-		if (err) {
-			console.log(err);
-			process.exit(1);
-			return;
-		}
-	});
+ 
+// Start sign in process
+client.logOn({
+    "accountName": config.username,
+    "password": config.password,
+    "twoFactorCode": SteamTotp.generateAuthCode(config.sharedSecret)
 });
-
-client.on('loggedOn', function(details) {
-	console.log("Logged into Steam as " + client.steamID.getSteam3RenderedID());
-	client.setPersona(SteamUser.EPersonaState.Online);
+ 
+// Events (user signed in, cookies retrieved, new offer retrieved)
+client.on('loggedOn', () => {
+    console.log(`Logged into Steam as ${client.steamID.getSteam3RenderedID()}`);
+    client.setPersona(SteamUser.EPersonaState.Online);
 });
-
-
-
-client.on('webSession', function(sessionID, cookies) {
-	manager.setCookies(cookies, function(err) {
-		if (err) {
-			console.log(err);
-			process.exit(1);
-			return;
-		}
-
-		console.log("Got API key: " + manager.apiKey);
-	});
-
-	community.setCookies(cookies);
-	community.startConfirmationChecker(30000, config.identitySecret);
+ 
+client.on('webSession', (sessionID, cookies) => {
+    manager.setCookies(cookies, err =>  {
+        if (err) {
+            console.error(err);
+            return process.exit(1);
+        } else console.log(`Retrieved API key: ${manager.apiKey}`);
+    });
+ 
+    community.setCookies(cookies);
+    community.startConfirmationChecker(30000, config.identitySecret);
 });
-manager.on('newOffer', function(offer) {
-	console.log("New offer #" + offer.id + " from " + offer.partner.getSteamID64());
-	if (config.acceptSteamIDS.indexOf(offer.partner.getSteamID64()) >= 0) {
-		offer.accept(function(err) {
-			if (err) {
-				console.log("Unable to accept offer: " + err.message);
-			} else if (exists(offer.partner.getSteamID64()) == true) {
-				console.log("Offer Accepted from "+offer.partner.getSteamID64());
-			}
-		});
-	}
+ 
+manager.on('newOffer', offer => {
+    console.log(`New offer #${offer.id} from ${offer.partner.getSteamID64()}`);
+ 
+    // Check to make sure that the steam id of the offer partner is whitelisted, else decline
+    if(config.acceptSteamIDS.includes(offer.partner.getSteamID64())) {
+        offer.accept(err => {
+            if(err) console.log(`Error accepting offer: ${err.message}`)
+            else    console.log(`Success accepting offer from: ${offer.partner.getSteamID64()}`);
+        });
+    } else offer.decline();
 });
