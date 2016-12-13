@@ -22,7 +22,7 @@
 	},
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
 	"dependencies": {
-		"steamcommunity": "^3.27.2",
+		"steamcommunity": "^3.30.0",
 		"steamid": "^1.1.0",
 		"async": "^2.0.0",
 		"languages": "^0.1.3",
