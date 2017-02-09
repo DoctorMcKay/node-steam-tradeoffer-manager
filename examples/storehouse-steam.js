@@ -83,7 +83,7 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 });
 
 manager.on('pollData', function(pollData) {
-	fs.writeFile('polldata.json', JSON.stringify(pollData));
+	fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
 });
 
 /*
