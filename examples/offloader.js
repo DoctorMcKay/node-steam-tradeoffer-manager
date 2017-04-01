@@ -46,7 +46,7 @@ client.on('webSession', function(sessionID, cookies) {
 		console.log("Got API key: " + manager.apiKey);
 
 		// Get our inventory
-		manager.loadInventory(730, 2, true, function(err, inventory) {
+		manager.getInventoryContents(730, 2, true, function(err, inventory) {
 			if (err) {
 				console.log(err);
 				return;
