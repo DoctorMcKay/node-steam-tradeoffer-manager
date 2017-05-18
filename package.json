@@ -7,6 +7,9 @@
 		"type": "git",
 		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager.git"
 	},
+	"scripts": {
+		"lint": "./node_modules/.bin/eslint ."
+	},
 	"keywords": [
 		"steam",
 		"trade",
@@ -30,5 +33,10 @@
 	},
 	"engines": {
 		"node": ">=4.0.0"
-	}
+	},
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.2.0"
+  }
 }
