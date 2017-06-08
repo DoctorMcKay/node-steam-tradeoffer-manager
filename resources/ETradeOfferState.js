@@ -1,26 +1,15 @@
 module.exports = {
 	Invalid: 1,
-	// This trade offer has been sent, neither party has acted on it yet.
-	Active: 2,
-	// The trade offer was accepted by the recipient and items were exchanged.
-	Accepted: 3,
-	// The recipient made a counter offer
-	Countered: 4,
-	// The trade offer was not accepted before the expiration date
-	Expired: 5,
-	// The sender cancelled the offer
-	Canceled: 6,
-	// The recipient declined the offer
-	Declined: 7,
-	// Some of the items in the offer are no longer available
-	// (indicated by the missing flag in the output)
-	InvalidItems: 8,
-	// The offer hasn't been sent yet and is awaiting further confirmation
-	CreatedNeedsConfirmation: 9,
-	// Either party canceled the offer via email/mobile confirmation
-	CanceledBySecondFactor: 10,
-	// The trade has been placed on hold
-	InEscrow: 11,
+	Active: 2,            // This trade offer has been sent, neither party has acted on it yet.
+	Accepted: 3,          // The trade offer was accepted by the recipient and items were exchanged.
+	Countered: 4,         // The recipient made a counter offer
+	Expired: 5,           // The trade offer was not accepted before the expiration date
+	Canceled: 6,          // The sender cancelled the offer
+	Declined: 7,          // The recipient declined the offer
+	InvalidItems: 8,      // Some of the items in the offer are no longer available (indicated by the missing flag in the output)
+	CreatedNeedsConfirmation: 9, // The offer hasn't been sent yet and is awaiting further confirmation
+	CanceledBySecondFactor: 10, // Either party canceled the offer via email/mobile confirmation
+	InEscrow: 11,          // The trade has been placed on hold
 
 	1: 'Invalid',
 	2: 'Active',

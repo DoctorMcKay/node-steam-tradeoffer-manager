@@ -33,12 +33,12 @@ if (fs.existsSync('polldata.json')) {
 
 client.logOn(logOnOptions);
 
-client.on('loggedOn', function () {
+client.on('loggedOn', function() {
 	console.log('Logged into Steam');
 });
 
-client.on('webSession', function (sessionID, cookies) {
-	manager.setCookies(cookies, function (cookiesErr) {
+client.on('webSession', function(sessionID, cookies) {
+	manager.setCookies(cookies, function(cookiesErr) {
 		if (cookiesErr) {
 			console.log(cookiesErr);
 			process.exit(1); // Fatal error since we couldn't get our API key
@@ -48,7 +48,7 @@ client.on('webSession', function (sessionID, cookies) {
 		console.log('Got API key: ' + manager.apiKey);
 
 		// Get our inventory
-		manager.getInventoryContents(730, 2, true, function (inventoryErr, inventory) {
+		manager.getInventoryContents(730, 2, true, function(inventoryErr, inventory) {
 			if (inventoryErr) {
 				console.log(inventoryErr);
 				return;
@@ -67,7 +67,7 @@ client.on('webSession', function (sessionID, cookies) {
 			var offer = manager.createOffer(token);
 			offer.addMyItems(inventory);
 			offer.setMessage('Here, have some items!');
-			offer.send(function (offerSentErr, status) {
+			offer.send(function(offerSentErr, status) {
 				if (offerSentErr) {
 					console.log(offerSentErr);
 					return;
@@ -76,7 +76,7 @@ client.on('webSession', function (sessionID, cookies) {
 				if (status === 'pending') {
 					// We need to confirm it
 					console.log(`Offer #${offer.id} sent, but requires confirmation`);
-					community.acceptConfirmationForObject('identitySecret', offer.id, function (confirmationErr) {
+					community.acceptConfirmationForObject('identitySecret', offer.id, function(confirmationErr) {
 						if (confirmationErr) {
 							console.log(confirmationErr);
 						} else {
@@ -93,13 +93,13 @@ client.on('webSession', function (sessionID, cookies) {
 	community.setCookies(cookies);
 });
 
-manager.on('sentOfferChanged', function (offer, oldState) {
+manager.on('sentOfferChanged', function(offer, oldState) {
 	console.log(`Offer #${offer.id} changed: \
 ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOfferState[offer.state]}`);
 });
 
-manager.on('pollData', function (pollData) {
-	fs.writeFile('polldata.json', JSON.stringify(pollData), function () {});
+manager.on('pollData', function(pollData) {
+	fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
 });
 
 /*

@@ -35,12 +35,12 @@ if (fs.existsSync('polldata.json')) {
 
 client.logOn(logOnOptions);
 
-client.on('loggedOn', function () {
+client.on('loggedOn', function() {
 	console.log('Logged into Steam');
 });
 
-client.on('webSession', function (sessionID, cookies) {
-	manager.setCookies(cookies, function (err) {
+client.on('webSession', function(sessionID, cookies) {
+	manager.setCookies(cookies, function(err) {
 		if (err) {
 			console.log(err);
 			process.exit(1); // Fatal error since we couldn't get our API key
@@ -54,9 +54,9 @@ client.on('webSession', function (sessionID, cookies) {
 	community.startConfirmationChecker(30000, 'identitySecret'); // Checks and accepts confirmations every 30 seconds
 });
 
-manager.on('newOffer', function (offer) {
+manager.on('newOffer', function(offer) {
 	console.log('New offer #' + offer.id + ' from ' + offer.partner.getSteam3RenderedID());
-	offer.accept(function (err) {
+	offer.accept(function(err) {
 		if (err) {
 			console.log('Unable to accept offer: ' + err.message);
 		} else {
@@ -66,16 +66,16 @@ manager.on('newOffer', function (offer) {
 	});
 });
 
-manager.on('receivedOfferChanged', function (offer, oldState) {
+manager.on('receivedOfferChanged', function(offer, oldState) {
 	console.log(`Offer #${offer.id} changed: \
 ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOfferState[offer.state]}`);
 
-	if (offer.state === TradeOfferManager.ETradeOfferState.Accepted) {
-		offer.getReceivedItems(function (err, items) {
+	if (offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
+		offer.getReceivedItems(function(err, items) {
 			if (err) {
 				console.log('Couldn\'t get received items: ' + err);
 			} else {
-				var names = items.map(function (item) {
+				var names = items.map(function(item) {
 					return item.name;
 				});
 
@@ -85,8 +85,8 @@ ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOff
 	}
 });
 
-manager.on('pollData', function (pollData) {
-	fs.writeFile('polldata.json', JSON.stringify(pollData), function () {});
+manager.on('pollData', function(pollData) {
+	fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
 });
 
 /*

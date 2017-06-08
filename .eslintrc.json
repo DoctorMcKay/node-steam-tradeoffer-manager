@@ -15,11 +15,14 @@
         "prefer-template": "off",
         "no-var": "off",
         "vars-on-top": "off",
-        "max-len": ["error", { "code": 120 }],
         "func-names": "off",
         "prefer-arrow-callback": "off",
         "import/no-extraneous-dependencies": "off",
         "no-restricted-syntax": "off",
-        "no-prototype-builtins": "off"
+        "no-prototype-builtins": "off",
+        "comma-dangle": "off",
+        "max-len": "off",
+        "eqeqeq": "off",
+        "space-before-function-paren": "off"
     }
 }

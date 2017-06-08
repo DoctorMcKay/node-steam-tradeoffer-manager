@@ -57,8 +57,7 @@ module.exports = {
 	DataCorruption: 53,
 	DiskFull: 54,
 	RemoteCallFailed: 55,
-	// obsolete 'renamed to PasswordUnset'
-	PasswordNotSet: 56,
+	PasswordNotSet: 56, // obsolete "renamed to PasswordUnset"
 	PasswordUnset: 56,
 	ExternalAccountUnlinked: 57,
 	PSNTicketInvalid: 58,
@@ -69,8 +68,7 @@ module.exports = {
 	AccountLogonDenied: 63,
 	CannotUseOldPassword: 64,
 	InvalidLoginAuthCode: 65,
-	// obsolete 'renamed to AccountLogonDeniedNoMail'
-	AccountLogonDeniedNoMailSent: 66,
+	AccountLogonDeniedNoMailSent: 66, // obsolete "renamed to AccountLogonDeniedNoMail"
 	AccountLogonDeniedNoMail: 66,
 	HardwareNotCapableOfIPT: 67,
 	IPTInitError: 68,
@@ -78,8 +76,7 @@ module.exports = {
 	FacebookQueryError: 70,
 	ExpiredLoginAuthCode: 71,
 	IPLoginRestrictionFailed: 72,
-	// obsolete 'renamed to AccountLockedDown'
-	AccountLocked: 73,
+	AccountLocked: 73, // obsolete "renamed to AccountLockedDown"
 	AccountLockedDown: 73,
 	AccountLogonDeniedVerifiedEmailRequired: 74,
 	NoMatchingURL: 75,
@@ -92,28 +89,22 @@ module.exports = {
 	RestrictedDevice: 82,
 	RegionLocked: 83,
 	RateLimitExceeded: 84,
-	// obsolete 'renamed to AccountLoginDeniedNeedTwoFactor'
-	AccountLogonDeniedNeedTwoFactorCode: 85,
+	AccountLogonDeniedNeedTwoFactorCode: 85, // obsolete "renamed to AccountLoginDeniedNeedTwoFactor"
 	AccountLoginDeniedNeedTwoFactor: 85,
-	// obsolete 'renamed to ItemDeleted'
-	ItemOrEntryHasBeenDeleted: 86,
+	ItemOrEntryHasBeenDeleted: 86, // obsolete "renamed to ItemDeleted"
 	ItemDeleted: 86,
 	AccountLoginDeniedThrottle: 87,
 	TwoFactorCodeMismatch: 88,
 	TwoFactorActivationCodeMismatch: 89,
-	// obsolete 'renamed to AccountAssociatedToMultiplePartners'
-	AccountAssociatedToMultiplePlayers: 90,
+	AccountAssociatedToMultiplePlayers: 90, // obsolete "renamed to AccountAssociatedToMultiplePartners"
 	AccountAssociatedToMultiplePartners: 90,
 	NotModified: 91,
-	// obsolete 'renamed to NoMobileDevice'
-	NoMobileDeviceAvailable: 92,
+	NoMobileDeviceAvailable: 92, // obsolete "renamed to NoMobileDevice"
 	NoMobileDevice: 92,
-	// obsolete 'renamed to TimeNotSynced'
-	TimeIsOutOfSync: 93,
+	TimeIsOutOfSync: 93, // obsolete "renamed to TimeNotSynced"
 	TimeNotSynced: 93,
 	SMSCodeFailed: 94,
-	// obsolete 'renamed to AccountLimitExceeded'
-	TooManyAccountsAccessThisResource: 95,
+	TooManyAccountsAccessThisResource: 95, // obsolete "renamed to AccountLimitExceeded"
 	AccountLimitExceeded: 95,
 	AccountActivityLimitExceeded: 96,
 	PhoneActivityLimitExceeded: 97,
