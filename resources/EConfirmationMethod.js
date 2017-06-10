@@ -5,5 +5,5 @@ module.exports = {
 
 	0: 'None',
 	1: 'Email',
-	2: 'MobileApp',
+	2: 'MobileApp'
 };

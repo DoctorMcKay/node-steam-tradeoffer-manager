@@ -20,9 +20,10 @@
         "import/no-extraneous-dependencies": "off",
         "no-restricted-syntax": "off",
         "no-prototype-builtins": "off",
-        "comma-dangle": "off",
+        "comma-dangle": ["error", "never"],
         "max-len": "off",
         "eqeqeq": "off",
-        "space-before-function-paren": "off"
+        "space-before-function-paren": "off",
+        "spaced-comment": "off"
     }
 }

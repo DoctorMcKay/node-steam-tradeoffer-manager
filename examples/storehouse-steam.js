@@ -18,7 +18,7 @@ var client = new SteamUser();
 var manager = new TradeOfferManager({
 	steam: client, // Polling every 30 seconds is fine since we get notifications from Steam
 	domain: 'example.com', // Our domain is example.com
-	language: 'en', // We want English item descriptions
+	language: 'en' // We want English item descriptions
 });
 var community = new SteamCommunity();
 
@@ -26,7 +26,7 @@ var community = new SteamCommunity();
 var logOnOptions = {
 	accountName: 'username',
 	password: 'password',
-	twoFactorCode: SteamTotp.getAuthCode('sharedSecret'),
+	twoFactorCode: SteamTotp.getAuthCode('sharedSecret')
 };
 
 if (fs.existsSync('polldata.json')) {

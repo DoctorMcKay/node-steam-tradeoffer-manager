@@ -21,5 +21,5 @@ module.exports = {
 	8: 'InvalidItems',
 	9: 'CreatedNeedsConfirmation',
 	10: 'CanceledBySecondFactor',
-	11: 'InEscrow',
+	11: 'InEscrow'
 };

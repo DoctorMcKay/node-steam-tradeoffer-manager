@@ -222,5 +222,5 @@ module.exports = {
 	102: 'GSLTDenied',
 	103: 'GSOwnerDenied',
 	104: 'InvalidItemType',
-	105: 'IPBanned',
+	105: 'IPBanned'
 };
