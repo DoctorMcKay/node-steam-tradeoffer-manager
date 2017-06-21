@@ -77,7 +77,15 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 				return;
 			}
 			
-			console.log(`Received items ${receivedItems} Sent Items ${sentItems} - status ${TradeOfferManager.ETradeStatus[status]}`)
+			let newReceivedItems = receivedItems.map((item)=>{
+				return item.new_assetid;
+			});
+			
+			let newSentItems = sentItems.map(item)=>{
+				return item.new_assetid;
+			});
+			
+			console.log(`Received items ${newReceivedItems} Sent Items ${newSentItems} - status ${TradeOfferManager.ETradeStatus[status]}`)
 		})
 	}
 });
