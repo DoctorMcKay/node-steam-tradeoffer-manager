@@ -71,17 +71,22 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 	console.log(`Offer #${offer.id} changed: ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOfferState[offer.state]}`);
 
 	if (offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
-		offer.getReceivedItems(function(err, items) {
+		offer.getExchangeDetails((err, status, tradeInitTime, receivedItems, sentItems) => {
 			if (err) {
-				console.log("Couldn't get received items: " + err);
-			} else {
-				var names = items.map(function(item) {
-					return item.name;
-				});
-
-				console.log("Received: " + names.join(', '));
+				console.log(`Error ${err}`);
+				return;
 			}
-		});
+			
+			let newReceivedItems = receivedItems.map((item)=>{
+				return item.new_assetid;
+			});
+			
+			let newSentItems = sentItems.map(item)=>{
+				return item.new_assetid;
+			});
+			
+			console.log(`Received items ${newReceivedItems} Sent Items ${newSentItems} - status ${TradeOfferManager.ETradeStatus[status]}`)
+		})
 	}
 });
 
