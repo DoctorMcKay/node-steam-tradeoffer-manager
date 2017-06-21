@@ -76,16 +76,12 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 				console.log(`Error ${err}`);
 				return;
 			}
+
+			// Create arrays of just the new assetids using Array.prototype.map and arrow functions
+			let newReceivedItems = receivedItems.map(item => item.new_assetid);
+			let newSentItems = sentItems.map(item => item.new_assetid);
 			
-			let newReceivedItems = receivedItems.map((item)=>{
-				return item.new_assetid;
-			});
-			
-			let newSentItems = sentItems.map(item)=>{
-				return item.new_assetid;
-			});
-			
-			console.log(`Received items ${newReceivedItems} Sent Items ${newSentItems} - status ${TradeOfferManager.ETradeStatus[status]}`)
+			console.log(`Received items ${newReceivedItems.join(',')} Sent Items ${newSentItems.join(',')} - status ${TradeOfferManager.ETradeStatus[status]}`)
 		})
 	}
 });
