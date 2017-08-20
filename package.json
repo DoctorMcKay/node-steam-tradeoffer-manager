@@ -22,6 +22,7 @@
 	},
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
 	"dependencies": {
+		"@doctormckay/leastused-cache": "^1.0.0",
 		"@doctormckay/stats-reporter": "^1.0.2",
 		"appdirectory": "^0.1.0",
 		"async": "^2.5.0",
