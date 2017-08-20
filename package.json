@@ -23,6 +23,7 @@
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
 	"dependencies": {
 		"@doctormckay/stats-reporter": "^1.0.2",
+		"appdirectory": "^0.1.0",
 		"async": "^2.5.0",
 		"deep-equal": "^1.0.1",
 		"file-manager": "^1.0.1",
