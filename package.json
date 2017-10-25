@@ -21,6 +21,9 @@
 		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues"
 	},
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
+	"scripts": {
+		"update-resources": "node scripts/update-resources.js"
+	},
 	"dependencies": {
 		"@doctormckay/leastused-cache": "^1.0.0",
 		"@doctormckay/stats-reporter": "^1.0.3",
