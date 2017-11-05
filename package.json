@@ -15,7 +15,7 @@
 		"trading",
 		"trade"
 	],
-	"author": "Alexander Corn <mckay@doctormckay.com>",
+	"author": "Alex Corn <mckay@doctormckay.com>",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues"
