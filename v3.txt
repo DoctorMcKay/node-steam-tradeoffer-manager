@@ -1,0 +1,4 @@
+BREAKING:
+
+- Removed loadInventory
+- Removed loadUserInventory
