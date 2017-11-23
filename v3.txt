@@ -1,4 +1,7 @@
 BREAKING:
-
 - Removed loadInventory
 - Removed loadUserInventory
+- now requires node 6
+
+NEW:
+- Trade sessions
