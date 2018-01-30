@@ -5,31 +5,31 @@
  *    node-steam-totp to generate 2FA codes
  */
 
-var SteamCommunity = require('steamcommunity');
-var SteamTotp = require('steam-totp');
-var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
-var fs = require('fs');
+const SteamCommunity = require('steamcommunity');
+const SteamTotp = require('steam-totp');
+const TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
+const FS = require('fs');
 
-var steam = new SteamCommunity();
-var manager = new TradeOfferManager({
+let steam = new SteamCommunity();
+let manager = new TradeOfferManager({
 	"domain": "example.com", // Our domain is example.com
 	"language": "en", // We want English item descriptions
 	"pollInterval": 5000 // We want to poll every 5 seconds since we don't have Steam notifying us of offers
 });
 
 // Steam logon options
-var logOnOptions = {
+let logOnOptions = {
 	"accountName": "username",
 	"password": "password",
 	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
 };
 
-if (fs.existsSync('steamguard.txt')) {
-	logOnOptions.steamguard = fs.readFileSync('steamguard.txt').toString('utf8');
+if (FS.existsSync('steamguard.txt')) {
+	logOnOptions.steamguard = FS.readFileSync('steamguard.txt').toString('utf8');
 }
 
-if (fs.existsSync('polldata.json')) {
-	manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
+if (FS.existsSync('polldata.json')) {
+	manager.pollData = JSON.parse(FS.readFileSync('polldata.json').toString('utf8'));
 }
 
 steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
@@ -38,7 +38,7 @@ steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 		process.exit(1);
 	}
 
-	fs.writeFile('steamguard.txt', steamguard);
+	FS.writeFileSync('steamguard.txt', steamguard);
 
 	console.log("Logged into Steam");
 
@@ -51,18 +51,24 @@ steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 
 		console.log("Got API key: " + manager.apiKey);
 	});
-
-	steam.startConfirmationChecker(30000, "identitySecret"); // Checks and accepts confirmations every 30 seconds
 });
 
 manager.on('newOffer', function(offer) {
 	console.log("New offer #" + offer.id + " from " + offer.partner.getSteam3RenderedID());
-	offer.accept(function(err) {
+	offer.accept(function(err, status) {
 		if (err) {
 			console.log("Unable to accept offer: " + err.message);
 		} else {
-			steam.checkConfirmations(); // Check for confirmations right after accepting the offer
-			console.log("Offer accepted");
+			console.log("Offer accepted: " + status);
+			if (status == "pending") {
+				steam.acceptConfirmationForObject("identitySecret", offer.id, function(err) {
+					if (err) {
+						console.log("Can't confirm trade offer: " + err.message);
+					} else {
+						console.log("Trade offer " + offer.id + " confirmed");
+					}
+				});
+			}
 		}
 	});
 });
@@ -80,19 +86,19 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 			// Create arrays of just the new assetids using Array.prototype.map and arrow functions
 			let newReceivedItems = receivedItems.map(item => item.new_assetid);
 			let newSentItems = sentItems.map(item => item.new_assetid);
-			
+
 			console.log(`Received items ${newReceivedItems.join(',')} Sent Items ${newSentItems.join(',')} - status ${TradeOfferManager.ETradeStatus[status]}`)
 		})
 	}
 });
 
 manager.on('pollData', function(pollData) {
-	fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
+	FS.writeFileSync('polldata.json', JSON.stringify(pollData));
 });
 
 /*
  * Example output:
- * 
+ *
  * Logged into Steam
  * Got API key: <key>
  * New offer #474139989 from [U:1:46143802]
