@@ -28,7 +28,7 @@ let logOnOptions = {
 };
 
 if (FS.existsSync('polldata.json')) {
-	manager.pollData = JSON.parse(fs.readFileSync('polldata.json').toString('utf8'));
+	manager.pollData = JSON.parse(FS.readFileSync('polldata.json').toString('utf8'));
 }
 
 client.logOn(logOnOptions);
