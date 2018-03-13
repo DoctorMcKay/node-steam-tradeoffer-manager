@@ -10,60 +10,60 @@ const SteamUser = require('steam-user');
 const SteamCommunity = require('steamcommunity');
 const SteamTotp = require('steam-totp');
 const TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
-const FS = require('fs');
+const fs = require('fs');
 
-let client = new SteamUser();
-let manager = new TradeOfferManager({
-	"steam": client, // Polling every 30 seconds is fine since we get notifications from Steam
-	"domain": "example.com", // Our domain is example.com
-	"language": "en" // We want English item descriptions
+const client = new SteamUser();
+const manager = new TradeOfferManager({
+	steam: client, // Polling every 30 seconds is fine since we get notifications from Steam
+	domain: 'example.com', // Our domain is example.com
+	language: 'en' // We want English item descriptions
 });
-let community = new SteamCommunity();
+const community = new SteamCommunity();
 
 // Steam logon options
-let logOnOptions = {
-	"accountName": "username",
-	"password": "password",
-	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
+const logOnOptions = {
+	accountName: 'username',
+	password: 'password',
+	twoFactorCode: SteamTotp.getAuthCode('sharedSecret')
 };
 
-if (FS.existsSync('polldata.json')) {
-	manager.pollData = JSON.parse(FS.readFileSync('polldata.json').toString('utf8'));
+if (fs.existsSync('polldata.json')) {
+	manager.pollData = JSON.parse(fs.readFileSync('polldata.json').toString('utf8'));
 }
 
 client.logOn(logOnOptions);
 
-client.on('loggedOn', function() {
-	console.log("Logged into Steam");
+client.on('loggedOn', () => {
+	console.log('Logged into Steam');
 });
 
-client.on('webSession', function(sessionID, cookies) {
-	manager.setCookies(cookies, function(err) {
+client.on('webSession', (sessionID, cookies) => {
+	manager.setCookies(cookies, (err) => {
 		if (err) {
 			console.log(err);
 			process.exit(1); // Fatal error since we couldn't get our API key
 			return;
 		}
 
-		console.log("Got API key: " + manager.apiKey);
+		console.log(`Got API key: ${manager.apiKey}`);
 	});
 
 	community.setCookies(cookies);
 });
 
-manager.on('newOffer', function(offer) {
-	console.log("New offer #" + offer.id + " from " + offer.partner.getSteam3RenderedID());
-	offer.accept(function(err, status) {
+manager.on('newOffer', function (offer) {
+	console.log(`New offer #${offer.id} from ${offer.partner.getSteam3RenderedID()}`);
+	offer.accept((err, status) => {
 		if (err) {
-			console.log("Unable to accept offer: " + err.message);
+			console.log(`Unable to accept offer: ${err.message}`);
 		} else {
-			console.log("Offer accepted: " + status);
-			if (status == "pending") {
-				community.acceptConfirmationForObject("identitySecret", offer.id, function(err) {
+			console.log(`Offer accepted: ${status}`);
+			if (status === 'pending') {
+				community.acceptConfirmationForObject('identitySecret', offer.id, (err) => {
 					if (err) {
-						console.log("Can't confirm trade offer: " + err.message);
+						console.log(`Can't confirm trade offer: ${err.message}`);
 					} else {
-						console.log("Trade offer " + offer.id + " confirmed");
+						console.log(`Trade offer ${offer.id} confirmed`);
 					}
 				});
 			}
@@ -71,10 +71,10 @@ manager.on('newOffer', function(offer) {
 	});
 });
 
-manager.on('receivedOfferChanged', function(offer, oldState) {
+manager.on('receivedOfferChanged', (offer, oldState) => {
 	console.log(`Offer #${offer.id} changed: ${TradeOfferManager.ETradeOfferState[oldState]} -> ${TradeOfferManager.ETradeOfferState[offer.state]}`);
 
-	if (offer.state == TradeOfferManager.ETradeOfferState.Accepted) {
+	if (offer.state === TradeOfferManager.ETradeOfferState.Accepted) {
 		offer.getExchangeDetails((err, status, tradeInitTime, receivedItems, sentItems) => {
 			if (err) {
 				console.log(`Error ${err}`);
@@ -82,16 +82,16 @@ manager.on('receivedOfferChanged', function(offer, oldState) {
 			}
 
 			// Create arrays of just the new assetids using Array.prototype.map and arrow functions
-			let newReceivedItems = receivedItems.map(item => item.new_assetid);
-			let newSentItems = sentItems.map(item => item.new_assetid);
+			const newReceivedItems = receivedItems.map(item => item.new_assetid);
+			const newSentItems = sentItems.map(item => item.new_assetid);
 
 			console.log(`Received items ${newReceivedItems.join(',')} Sent Items ${newSentItems.join(',')} - status ${TradeOfferManager.ETradeStatus[status]}`)
 		})
 	}
 });
 
-manager.on('pollData', function(pollData) {
-	FS.writeFileSync('polldata.json', JSON.stringify(pollData));
+manager.on('pollData', (pollData) => {
+	fs.writeFileSync('polldata.json', JSON.stringify(pollData));
 });
 
 /*
