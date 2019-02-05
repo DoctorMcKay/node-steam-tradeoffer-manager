@@ -4,29 +4,29 @@
  * Once logged in, sends a trade offer containing this account's entire tradable CS:GO inventory.
  */
 
-var SteamUser = require('steam-user');
-var SteamCommunity = require('steamcommunity');
-var SteamTotp = require('steam-totp');
-var TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
-var fs = require('fs');
+const SteamUser = require('steam-user');
+const SteamCommunity = require('steamcommunity');
+const SteamTotp = require('steam-totp');
+const TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
+const FS = require('fs');
 
-var client = new SteamUser();
-var manager = new TradeOfferManager({
+let client = new SteamUser();
+let manager = new TradeOfferManager({
 	"steam": client, // Polling every 30 seconds is fine since we get notifications from Steam
 	"domain": "example.com", // Our domain is example.com
 	"language": "en" // We want English item descriptions
 });
-var community = new SteamCommunity();
+let community = new SteamCommunity();
 
 // Steam logon options
-var logOnOptions = {
+let logOnOptions = {
 	"accountName": "username",
 	"password": "password",
 	"twoFactorCode": SteamTotp.getAuthCode("sharedSecret")
 };
 
-if (fs.existsSync('polldata.json')) {
-	manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
+if (FS.existsSync('polldata.json')) {
+	manager.pollData = JSON.parse(FS.readFileSync('polldata.json').toString('utf8'));
 }
 
 client.logOn(logOnOptions);
@@ -61,7 +61,7 @@ client.on('webSession', function(sessionID, cookies) {
 			console.log("Found " + inventory.length + " CS:GO items");
 
 			// Create and send the offer
-			var offer = manager.createOffer("https://steamcommunity.com/tradeoffer/new/?partner=12345678&token=xxxxxxxx");
+			let offer = manager.createOffer("https://steamcommunity.com/tradeoffer/new/?partner=12345678&token=xxxxxxxx");
 			offer.addMyItems(inventory);
 			offer.setMessage("Here, have some items!");
 			offer.send(function(err, status) {
@@ -95,7 +95,7 @@ manager.on('sentOfferChanged', function(offer, oldState) {
 });
 
 manager.on('pollData', function(pollData) {
-	fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
+	FS.writeFileSync('polldata.json', JSON.stringify(pollData));
 });
 
 /*
