@@ -29,7 +29,6 @@
 		"@doctormckay/stats-reporter": "^1.0.3",
 		"@doctormckay/stdlib": "^1.5.1",
 		"appdirectory": "^0.1.0",
-		"async": "^2.6.0",
 		"deep-equal": "^1.0.1",
 		"file-manager": "^1.0.1",
 		"languages": "^0.1.3",
