@@ -11,8 +11,6 @@ This module is designed to be a completely self-contained manager for
 Instead of being just a simple API wrapper, it's designed to take most of the work out of implementing trade offers in
 your application.
 
-This reports anonymous usage statistics to the author. [See here](https://github.com/DoctorMcKay/node-stats-reporter) for more information.
-
 **You absolutely need Node.js v4.0.0 or later or this won't work.**
 
 Install it from [npm](https://www.npmjs.com/package/steam-tradeoffer-manager) or check out the
