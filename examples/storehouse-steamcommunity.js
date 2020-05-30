@@ -10,7 +10,7 @@ const SteamTotp = require('steam-totp');
 const TradeOfferManager = require('../lib/index.js'); // use require('steam-tradeoffer-manager') in production
 const FS = require('fs');
 
-let steam = new SteamCommunity();
+let community = new SteamCommunity();
 let manager = new TradeOfferManager({
 	"domain": "example.com", // Our domain is example.com
 	"language": "en", // We want English item descriptions
@@ -32,7 +32,7 @@ if (FS.existsSync('polldata.json')) {
 	manager.pollData = JSON.parse(FS.readFileSync('polldata.json').toString('utf8'));
 }
 
-steam.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
+community.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 	if (err) {
 		console.log("Steam login fail: " + err.message);
 		process.exit(1);
@@ -61,7 +61,7 @@ manager.on('newOffer', function(offer) {
 		} else {
 			console.log("Offer accepted: " + status);
 			if (status == "pending") {
-				steam.acceptConfirmationForObject("identitySecret", offer.id, function(err) {
+				community.acceptConfirmationForObject("identitySecret", offer.id, function(err) {
 					if (err) {
 						console.log("Can't confirm trade offer: " + err.message);
 					} else {
