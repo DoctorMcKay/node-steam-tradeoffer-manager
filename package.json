@@ -1,6 +1,6 @@
 {
   "name": "@tf2autobot/tradeoffer-manager",
-  "version": "1.1.0",
+  "version": "2.10.0",
   "description": "A simple trade offers API for Steam",
   "main": "./lib/index.js",
   "repository": {
