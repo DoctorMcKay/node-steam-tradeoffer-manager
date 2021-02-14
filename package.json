@@ -1,40 +1,44 @@
 {
-	"name": "@TF2autobot/steam-tradeoffer-manager",
-	"version": "2.11",
-	"description": "A simple trade offers API for Steam",
-	"main": "./lib/index.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager.git"
-	},
-	"keywords": [
-		"steam",
-		"trade",
-		"offers",
-		"tradeoffers",
-		"trading",
-		"trade"
-	],
-	"author": "Alex Corn <mckay@doctormckay.com>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager/issues"
-	},
-	"homepage": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager",
-	"scripts": {
-		"update-resources": "node scripts/update-resources.js"
-	},
-	"dependencies": {
-		"@doctormckay/stdlib": "^1.5.1",
-		"appdirectory": "^0.1.0",
-		"async": "^2.6.0",
-		"deep-equal": "^1.0.1",
-		"file-manager": "^1.0.1",
-		"languages": "^0.1.3",
-		"steamcommunity": "^3.33.1",
-		"steamid": "^1.1.0"
-	},
-	"engines": {
-		"node": ">=4.0.0"
-	}
+  "name": "@tf2autobot/node-steam-tradeoffer-manager",
+  "version": "0.1.0",
+  "description": "A simple trade offers API for Steam",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TF2Autobot/node-steam-tradeoffer-manager.git"
+  },
+  "keywords": [
+    "steam",
+    "trade",
+    "offers",
+    "tradeoffers",
+    "trading",
+    "trade"
+  ],
+  "author": "Alex Corn <mckay@doctormckay.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager/issues"
+  },
+  "homepage": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager",
+  "scripts": {
+    "update-resources": "node scripts/update-resources.js"
+  },
+  "dependencies": {
+    "@doctormckay/stdlib": "^1.5.1",
+    "appdirectory": "^0.1.0",
+    "async": "^2.6.0",
+    "file-manager": "^1.0.1",
+    "languages": "^0.1.3",
+    "steamcommunity": "^3.33.1",
+    "steamid": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "devDependencies": {}
 }
