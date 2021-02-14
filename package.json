@@ -1,11 +1,11 @@
 {
-	"name": "steam-tradeoffer-manager",
-	"version": "2.10.2",
+	"name": "@TF2autobot/steam-tradeoffer-manager",
+	"version": "2.11",
 	"description": "A simple trade offers API for Steam",
 	"main": "./lib/index.js",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager.git"
+		"url": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager.git"
 	},
 	"keywords": [
 		"steam",
@@ -18,9 +18,9 @@
 	"author": "Alex Corn <mckay@doctormckay.com>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/issues"
+		"url": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager/issues"
 	},
-	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
+	"homepage": "https://github.com/TF2Autobot/node-steam-tradeoffer-manager",
 	"scripts": {
 		"update-resources": "node scripts/update-resources.js"
 	},
