@@ -31,7 +31,7 @@
     "file-manager": "^1.0.1",
     "languages": "^0.1.3",
     "steamcommunity": "^3.43.1",
-    "steamid": "^1.1.0"
+    "steamid": "^2.0.0"
   },
   "engines": {
     "node": ">=4.0.0"
