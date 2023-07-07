@@ -1,9 +1,8 @@
 # Steam Trade Offer Manager for Node.js
 [![npm version](https://img.shields.io/npm/v/steam-tradeoffer-manager.svg)](https://npmjs.com/package/steam-tradeoffer-manager)
 [![npm downloads](https://img.shields.io/npm/dm/steam-tradeoffer-manager.svg)](https://npmjs.com/package/steam-tradeoffer-manager)
-[![dependencies](https://img.shields.io/david/DoctorMcKay/node-steam-tradeoffer-manager.svg)](https://david-dm.org/DoctorMcKay/node-steam-tradeoffer-manager)
 [![license](https://img.shields.io/npm/l/steam-tradeoffer-manager.svg)](https://github.com/DoctorMcKay/node-steam-tradeoffer-manager/blob/master/LICENSE)
-[![paypal](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=N36YVAT42CZ4G&item_name=node%2dsteam%2dtradeoffer%2dmanager&currency_code=USD)
+[![sponsors](https://img.shields.io/github/sponsors/DoctorMcKay.svg)](https://github.com/sponsors/DoctorMcKay)
 
 This module is designed to be a completely self-contained manager for
 [Steam trade offers](https://steamcommunity.com/my/tradeoffers).
