@@ -41,11 +41,11 @@ client.on('webSession', function(sessionID, cookies) {
 	manager.setCookies(cookies, function(err) {
 		if (err) {
 			console.log(err);
-			process.exit(1); // Fatal error since we couldn't get our API key
+			process.exit(1); // Fatal error
 			return;
 		}
 
-		console.log("Got API key: " + manager.apiKey);
+		console.log("Cookies set");
 	});
 
 	community.setCookies(cookies);
@@ -98,7 +98,7 @@ manager.on('pollData', function(pollData) {
  * Example output:
  *
  * Logged into Steam
- * Got API key: <key>
+ * Cookies set
  * New offer #474127822 from [U:1:46143802]
  * Offer accepted
  * Offer #474127822 changed: Active -> Accepted
