@@ -45,11 +45,11 @@ community.login(logOnOptions, function(err, sessionID, cookies, steamguard) {
 	manager.setCookies(cookies, function(err) {
 		if (err) {
 			console.log(err);
-			process.exit(1); // Fatal error since we couldn't get our API key
+			process.exit(1); // Fatal error
 			return;
 		}
 
-		console.log("Got API key: " + manager.apiKey);
+		console.log("Cookies set");
 	});
 });
 
@@ -100,7 +100,7 @@ manager.on('pollData', function(pollData) {
  * Example output:
  *
  * Logged into Steam
- * Got API key: <key>
+ * Cookies set
  * New offer #474139989 from [U:1:46143802]
  * Offer accepted
  * Offer #474139989 changed: Active -> Accepted

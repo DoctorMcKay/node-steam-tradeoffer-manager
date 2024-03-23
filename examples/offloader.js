@@ -39,11 +39,11 @@ client.on('webSession', function(sessionID, cookies) {
 	manager.setCookies(cookies, function(err) {
 		if (err) {
 			console.log(err);
-			process.exit(1); // Fatal error since we couldn't get our API key
+			process.exit(1); // Fatal error
 			return;
 		}
 
-		console.log("Got API key: " + manager.apiKey);
+		console.log("Cookies set");
 
 		// Get our inventory
 		manager.getInventoryContents(730, 2, true, function(err, inventory) {
@@ -102,7 +102,7 @@ manager.on('pollData', function(pollData) {
  * Example output:
  *
  * Logged into Steam
- * Got API key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ * Cookies set
  * Found 117 CS:GO items
  * Offer #1601569319 sent, but requires confirmation
  * Offer confirmed
