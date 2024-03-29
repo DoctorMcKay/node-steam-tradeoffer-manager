@@ -27,11 +27,14 @@
 	"dependencies": {
 		"@doctormckay/stdlib": "^1.16.0",
 		"async": "^2.6.0",
-		"deep-equal": "^1.0.1",
+		"fast-deep-equal": "^2.0.1",
 		"file-manager": "^1.0.1",
 		"languages": "^0.1.3",
 		"steamcommunity": "^3.48.2",
 		"steamid": "^1.1.0"
+	},
+	"devDependencies": {
+		"steam-totp": "^2.1.2"
 	},
 	"engines": {
 		"node": ">=4.0.0"
