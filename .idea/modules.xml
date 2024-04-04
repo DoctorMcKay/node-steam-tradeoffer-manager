@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/steam-tradeoffer-manager.iml" filepath="$PROJECT_DIR$/.idea/steam-tradeoffer-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../steam-tradeoffer-manager wiki/.idea/steam-tradeoffer-manager wiki.iml" filepath="$PROJECT_DIR$/../steam-tradeoffer-manager wiki/.idea/steam-tradeoffer-manager wiki.iml" />
     </modules>
   </component>
 </project>
