@@ -23,7 +23,8 @@
 	"homepage": "https://github.com/DoctorMcKay/node-steam-tradeoffer-manager",
 	"scripts": {
 		"update-resources": "node scripts/update-resources.js",
-		"format": "npx @biomejs/biome format --write ./lib ./resources"
+		"format": "npx @biomejs/biome format --write ./lib ./resources",
+		"lint": "npx @biomejs/biome lint --apply ./lib ./resources"
 	},
 	"dependencies": {
 		"@doctormckay/stdlib": "^1.16.0",
@@ -39,6 +40,6 @@
 		"steam-totp": "^2.1.2"
 	},
 	"engines": {
-		"node": ">=6.17.1"
+		"node": ">=16.20.2"
 	}
 }

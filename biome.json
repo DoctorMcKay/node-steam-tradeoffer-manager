@@ -13,9 +13,16 @@
 		"ignore": []
 	},
 	"linter": {
-		"enabled": false,
+		"enabled": true,
 		"rules": {
-			"recommended": false
+			"recommended": true,
+			"style": {
+				"noParameterAssign": "warn",
+				"noArguments": "warn"
+			},
+			"complexity": {
+				"noForEach": "warn"
+			}
 		}
 	}
 }
